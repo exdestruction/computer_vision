@@ -4,6 +4,6 @@
 
 #Ignore
 /bin*
-*.bmp
+#*.bmp
 */.vs
 *.user
