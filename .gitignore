@@ -1,0 +1,9 @@
+# Not igrore
+!.gitignore
+!images/.gitignore
+
+#Ignore
+/bin*
+*.bmp
+*/.vs
+*.user
