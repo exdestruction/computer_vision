@@ -23,16 +23,18 @@ int main(int argc, char** argv)
 	 auto resized_image = resize_image(image, 0.4);
 
 	 //creating and showing window
-	 cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
-	 cv::moveWindow(name, 600, 50);
-	 cv::imshow(name, resized_image);
-	 cv::waitKey(0);
+	 cv::namedWindow(name, cv::WINDOW_NORMAL);
+		cv::moveWindow(name, 600, 50);
+		cv::imshow(name, resized_image);
+		cv::waitKey(0);
 	 cv::destroyWindow(name);
+
+
+	 return 0;
 }
 
 //enables resizing window while opening
 cv::Mat resize_image(cv::Mat image, double zoom_factor) {
-	cv::Mat resized_image = image;
 	cv::Size new_size;
 	
 	//Checking zoom factor
@@ -48,7 +50,7 @@ cv::Mat resize_image(cv::Mat image, double zoom_factor) {
 
 	new_size.height = (int)(image.rows * zoom_factor);
 	new_size.width = (int)(image.cols * zoom_factor);
-	cv::resize(image, resized_image, new_size);
-	return resized_image;
+	cv::resize(image, image, new_size);
+	return image;
 }
 
