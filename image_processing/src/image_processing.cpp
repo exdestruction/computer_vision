@@ -19,19 +19,15 @@ int main(int argc, char** argv)
 
 	 //window properties
 	 auto name = "Image";
+
 	 auto resized_image = resize_image(image, 0.4);
 
-	 //creating window
+	 //creating and showing window
 	 cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
 	 cv::moveWindow(name, 600, 50);
-	 while (1) {
-	     cv::imshow(name, resized_image);
-	     if ((cv::waitKey(0) & 255) == 'q') 
-	     {
-	         break;
-	     }
-	 }
-	 return 0;
+	 cv::imshow(name, resized_image);
+	 cv::waitKey(0);
+	 cv::destroyWindow(name);
 }
 
 //enables resizing window while opening
@@ -42,7 +38,7 @@ cv::Mat resize_image(cv::Mat image, double zoom_factor) {
 	//Checking zoom factor
 	if (zoom_factor < 1.e-6)
 	{
-	  std::cout << "Wrong Zoom-factor: too small -> it is set to one\n";
+	  std::cout << "Wrong Zoom-factor: too small -> it is set to 1.0\n";
 	  zoom_factor = 1.0;
 	} 
 	int type = image.type();
