@@ -1,36 +1,62 @@
 #include <iostream>
+#include <filesystem>
+#include <vector>
+
 #include <opencv2/opencv.hpp>
 #include "image_processing.h"
 
-int main(int argc, char** argv)
+int main()
 {
-	 cv::Mat image = cv::imread("..//images//fanta.bmp", cv::IMREAD_GRAYSCALE);
+	//loading images from ./images to memory
+	std::multimap<const std::string, cv::Mat> images;
 
-	 //safety checking
-	 if (image.data == 0) {
-		 std::cout << "Image not found\n" << "Press ENTER to quit\n";
-		 std::cin.get();
-		 return 1;
-	 }
-	 if (image.rows == 0 || image.cols == 0) {
-		 std::cout << "Failure in show_image: height or width are identical to zero\n";
-		 return 2;
-	 }
+	std::string path_to_images = "..//images";
+	for (const auto& entry: std::filesystem::directory_iterator(path_to_images))
+	{
+		std::string image_path{ entry.path().u8string() };				//converting types for appopriate usage of 
+		if (image_path == (path_to_images + "\\.gitignore"))			//ignoring .gitignore in /images
+		{
+			continue;
+		}
 
-	 //window properties
-	 auto name = "Image";
+		cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
 
-	 auto resized_image = resize_image(image, 0.4);
+		//safety checking
+		if (image.data == 0) {
+			std::cout << "File "<< image_path << " is invalid for OpenCV\n";
+			continue;
+		}
+		if (image.rows == 0 || image.cols == 0) 
+		{
+			std::cout << "Failure in show_image: height or width are identical to zero\n";
+			continue;
+		}
 
-	 //creating and showing window
-	 cv::namedWindow(name, cv::WINDOW_NORMAL);
-		cv::moveWindow(name, 600, 50);
-		cv::imshow(name, resized_image);
-		cv::waitKey(0);
-	 cv::destroyWindow(name);
+		image = resize_image(image, 0.4);
+		images.insert({ image_path, image });
+	}
+
+	//opening all windows
+	int x_pos = 600;
+	int y_pos = 50;
+	for (auto& ptr: images)
+	{
+		const std::string name = ptr.first;
+		cv::Mat image = ptr.second;
+		cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
+		cv::moveWindow(name, x_pos, y_pos);
+		cv::imshow(name, image);
+		x_pos += 50;
+		y_pos += 50;
+	}
+
+	//creating and showing window
+	cv::waitKey(0);
+
+	cv::destroyAllWindows();
 
 
-	 return 0;
+	return 0;
 }
 
 //enables resizing window while opening
