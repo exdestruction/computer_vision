@@ -42,10 +42,10 @@ int main()
 	for (auto& ptr: images)
 	{
 		const std::string name = ptr.first;
-		cv::Mat image = ptr.second;
+		cv::Mat *image = &ptr.second;
 		cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
 		cv::moveWindow(name, x_pos, y_pos);
-		cv::imshow(name, image);
+		cv::imshow(name, *image);
 		x_pos += 50;
 		y_pos += 50;
 	}
