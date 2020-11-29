@@ -22,20 +22,19 @@ int main()
 	//make binary images
 	//for (const auto& ptr : images)
 	//auto iterate_over_images = images.clone();
-	auto images_new = images;
-	for(auto ptr = images.begin(); ptr != images.end(); ptr++)
+	auto images_iteratable = images;
+	for(auto ptr = images_iteratable.begin(); ptr != images_iteratable.end(); ptr++)
 	{
 		const std::string name = (*ptr).first;
 		cv::Mat image = (*ptr).second.clone();
 		cv::Mat image_threshold, image_adaptive_threshold;
 		int threshold = 130;
-		cv::threshold(image, image_threshold, threshold, 255, cv::THRESH_BINARY);
-		images_new.insert({ name + " threshold", image_threshold });
+		cv::threshold(image, image_threshold, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+		images.insert({ name + " threshold", image_threshold });
 		cv::adaptiveThreshold(image_threshold, image_adaptive_threshold, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 5, 0);
 		//cv::adaptiveThreshold((*ptr).second, image_adaptiveThreshold, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 5, 0);
-		images_new.insert({ name + " adaptive threshold", image_adaptive_threshold });	
+		images.insert({ name + " adaptive threshold", image_adaptive_threshold });	
 	}
-	images = images_new;
 
 	//opening all windows
 	int x_pos = 600;
@@ -136,10 +135,10 @@ void load_images(std::multimap<const std::string, cv::Mat>& images)
 			images.insert({ image_path, image });
 		}
 
-		/*if (images.size() == 1)
+		if (images.size() == 1)
 		{
 			break;
-		}*/
+		}
 	}
 }
 
