@@ -20,20 +20,16 @@ int main()
 	}
 
 	//make binary images
-	//for (const auto& ptr : images)
-	//auto iterate_over_images = images.clone();
-	auto images_iteratable = images;
-	for(auto ptr = images_iteratable.begin(); ptr != images_iteratable.end(); ptr++)
+	for(auto ptr = images.begin(); ptr != images.end(); ptr++ )
 	{
 		const std::string name = (*ptr).first;
-		cv::Mat image = (*ptr).second.clone();
 		cv::Mat image_threshold, image_adaptive_threshold;
-		int threshold = 130;
-		cv::threshold(image, image_threshold, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
-		images.insert({ name + " threshold", image_threshold });
+		cv::threshold((*ptr).second, image_threshold, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+		images.insert({ name + " OTSU threshold", image_threshold });
+		ptr++;
 		cv::adaptiveThreshold(image_threshold, image_adaptive_threshold, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 5, 0);
-		//cv::adaptiveThreshold((*ptr).second, image_adaptiveThreshold, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 5, 0);
-		images.insert({ name + " adaptive threshold", image_adaptive_threshold });	
+		images.insert({ name + " adaptive threshold", image_adaptive_threshold });
+		ptr++;
 	}
 
 	//opening all windows
@@ -96,22 +92,19 @@ void load_images(std::multimap<const std::string, cv::Mat>& images)
 		}
 
 		//extracting name from the path
-		/*const char* name = nullptr;
-		std::vector<const char> letters;
-		for (auto letter_ptr = image_path.cend(); letter_ptr != image_path.cbegin(); --letter_ptr) 
+		std::string name{ "" };
+		for (auto letter = image_path.rbegin(); letter != image_path.rend(); letter++) 
 		{
-			if (*letter_ptr != '\\')
+			if (*letter != '\\')
 			{
-				letters.push_back(*letter_ptr);
+				name += *letter;
 			}
 			else
 			{
-				letters.reserve(letters.size());
-				letters.push_back('\0');
+				std::reverse(name.begin(), name.end());
 				break;
 			}
 		}
-		name = &letters[0];*/
 
 
 
@@ -121,7 +114,7 @@ void load_images(std::multimap<const std::string, cv::Mat>& images)
 
 		//safety checking
 		if (image.data == 0) {
-			std::cout << "File " << image_path << " is invalid for OpenCV\n";
+			std::cout << "File " << name << " is invalid for OpenCV\n";
 			continue;
 		}
 		if (image.rows == 0 || image.cols == 0)
@@ -132,7 +125,7 @@ void load_images(std::multimap<const std::string, cv::Mat>& images)
 		else
 		{
 			image = resize_image(image, 0.4);
-			images.insert({ image_path, image });
+			images.insert({ name, image });
 		}
 
 		if (images.size() == 1)
