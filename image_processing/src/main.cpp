@@ -3,7 +3,9 @@
 #include <map>
 
 #include <opencv2/opencv.hpp>
-#include "image_processing.h"
+
+
+#include "main.h"
 
 
 int main()
