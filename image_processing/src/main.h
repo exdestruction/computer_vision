@@ -7,3 +7,5 @@
 #include "image_functions/Image.h"
 #include "image_functions/image_functions.h"
 
+//#define SINGLE_IMAGE
+//#define IMAGE_NAME "redbull.bmp"

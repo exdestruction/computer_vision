@@ -24,7 +24,6 @@ cv::Mat resize_image(cv::Mat& image, double zoom_factor) {
 void load_images(std::vector<Image*>& dst)
 {
 
-
 	std::string path_to_images = "..\\images";
 	for (const auto& entry : std::filesystem::directory_iterator(path_to_images))
 	{
@@ -48,12 +47,14 @@ void load_images(std::vector<Image*>& dst)
 				break;
 			}
 		}
+#ifdef SINGLE_IMAGE
+		if (name != IMAGE_NAME)
+		{
+			continue;
+		}
+#endif
 
-
-
-
-
-		cv::Mat image = cv::imread(image_path, cv::IMREAD_GRAYSCALE);
+		cv::Mat image = cv::imread(image_path, cv::IMREAD_COLOR);
 
 		//safety checking
 		if (image.data == 0) {
@@ -71,18 +72,18 @@ void load_images(std::vector<Image*>& dst)
 			Image* image_obj = new Image(name, image);
 			dst.push_back(image_obj);
 		}
-//#ifdef _DEBUG
-		/*if (dst.size() == 1)
+#ifdef SINGLE_IMAGE
+		if (dst.size() == 1)
 		{
 			break;
-		}*/
-//#endif
+		}
+#endif
 	}
 }
 
 void show_images(const std::vector<Image*> images)
 {
-	int x_pos = 600;
+	int x_pos = 50;
 	int y_pos = 50;
 	std::vector<Image*> images_traversed{ traverse(images) };
 	for (const auto& image : images_traversed)
@@ -91,8 +92,8 @@ void show_images(const std::vector<Image*> images)
 		cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
 		cv::moveWindow(name, x_pos, y_pos);
 		cv::imshow(name, image->get_image());
-		x_pos += 50;
-		y_pos += 50;
+		x_pos += 100;
+		y_pos += 30;
 	}
 }
 
@@ -110,4 +111,27 @@ std::vector<Image*> traverse(const std::vector<Image*> images)
 		result.insert(result.end(), derived.begin(), derived.end());
 	}
 	return result;
+}
+
+
+
+
+cv::Mat illuminate(cv::Mat src, double k)
+{
+	cv::Mat filtered_image = cv::Mat::zeros(src.size(), src.type()); 
+	cv::Mat illuminated_image = cv::Mat::zeros(src.size(), src.type());
+
+	uchar brightness = (cv::sum(src)[0]) / ((double)src.rows * (double)src.cols);
+
+	cv::GaussianBlur(src, filtered_image, cv::Size(5, 5), 0, 0);
+
+	for (int y = 0; y < src.rows; y++)
+	{
+		for (int x = 0; x < src.cols; x++)
+		{
+			illuminated_image.at<uchar>(y, x) = cv::saturate_cast<uchar>(src.at<uchar>(y, x) + k * (brightness - filtered_image.at<uchar>(y, x)));		
+		}
+	}
+	
+	return illuminated_image;
 }
