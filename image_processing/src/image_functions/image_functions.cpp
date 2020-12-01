@@ -123,7 +123,8 @@ cv::Mat illuminate(cv::Mat src, double k)
 
 	uchar brightness = (cv::sum(src)[0]) / ((double)src.rows * (double)src.cols);
 
-	cv::GaussianBlur(src, filtered_image, cv::Size(5, 5), 0, 0);
+	//cv::GaussianBlur(src, filtered_image, cv::Size(5, 5), 0, 0);
+	cv::blur(src, filtered_image, cv::Size(50,50));
 
 	for (int y = 0; y < src.rows; y++)
 	{
