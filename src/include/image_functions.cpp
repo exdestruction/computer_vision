@@ -1,4 +1,4 @@
-#include "../main.h"
+#include "main.h"
 
 //enables resizing window while opening
 cv::Mat resize_image(cv::Mat& image, double zoom_factor) {
