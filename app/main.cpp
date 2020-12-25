@@ -1,50 +1,43 @@
 #include <opencv2/opencv.hpp>
-#include "../include/main.h"
+#include "main.h"
 
 
 
 int main()
 {
+    std::string src_dir = CMAKE_SOURCE_DIR;
+    src_dir = src_dir + "/images";
+
+
 	//loading images from ./images to memory
 	std::vector<Image> images;
-	load_images(images);
-//	auto image_path = "../images/fanta.bmp";
-//	cv::Mat image = cv::imread(image_path, cv::IMREAD_COLOR);
+	std::vector<Image> images_to_be_shown;
+	load_images(src_dir,images);
 
-//	//safety checking
-//	if (image.data == 0) {
-//		std::cout << "File " << "fanta.bmp" << " is invalid for OpenCV\n";
-//		return -1;
-//	}
-//	if (image.rows == 0 || image.cols == 0)
-//	{
-//		std::cout << "Failure in show_image: height or width are identical to zero\n";
-//		return -1;
-//	}
-//	else
-//	{
-//		image = resize_image(image, 0.4);
-//		Image* image_obj = new Image("fanta.bmp", image);
-//		images.push_back(image_obj);
-//	}
 	
 	//checking if there is any image
 	if (images.empty())
 	{
 		std::cout << "Images not found\n";
-		return 0;
+		return -1;
 	}
 
+//	images_to_be_shown.insert(images_to_be_shown.end(), images.begin(), images.end());
+
 	//main image processing operations
-	for(const auto& image: images)
+//	for(auto& image : images)
+    for(int i = 0, end = images.size(); i < end; i++)
 	{
-		const std::string name = image.get_name();
+//	    images_to_be_shown.push_back(image);
+        auto image = images[i];
+	    const std::string name = image.get_name();
 		cv::Mat image_colorful = image.get_image().clone();
 		cv::Mat image_threshold, image_adaptive_threshold, image_matrix, image_canny;
 
 		//Tuning original image
-		image_colorful.convertTo(image_colorful, -1, 2.6, -120);
-		//image->add_derived_image(name + " tuned image", image_colorful);
+		image_colorful.convertTo(image_colorful, -1, 2.6, -120)
+		//adding tuned image
+		images.emplace_back(name + " tuned", image_colorful);
 
 
 		//convert to grayscale and tune
@@ -110,20 +103,14 @@ int main()
 		
 	}
 
-	//opening all windows
+	//showing all windows
 	show_images(images);
+
 //	write_images(images);
 
 	//waiting for any key to be pressed
 	 cv::waitKey();
-
 	 cv::destroyAllWindows();
-
-//	// cleaning all memory allocations
-//	for (auto ptr = images.begin(); ptr!= images.end(); ptr++)
-//	{
-//		delete *ptr;
-//	}
 
 	return 0;
 }

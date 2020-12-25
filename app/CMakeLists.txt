@@ -25,3 +25,9 @@ add_executable(${target_name} ${SOURCE})
 target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
 
 target_include_directories(${target_name} PRIVATE ../include)
+
+target_include_directories(${target_name} PRIVATE ${CMAKE_SOURCE_DIR})
+
+configure_file (
+		"${CMAKE_SOURCE_DIR}/include/cmake_variables/cmake_variables.h.in"
+		"${CMAKE_SOURCE_DIR}/include/cmake_variables/cmake_variables.h")

@@ -1,19 +1,19 @@
-#include "../include/Image.h"
+#include "Image.h"
 
-Image::Image(std::string& name, cv::Mat& image) : m_name(name), m_image(image) {}
+Image::Image(std::string name, cv::Mat image) : m_name(name), m_image(image) {}
 
-Image::~Image()
-{
-	if (!this->derived_images.empty())
-	{
-		//deleting all derived images
-        for (auto & derived_image : this->derived_images)
-        {
-
-            delete derived_image;
-        }
-	}
-}
+//Image::~Image()
+//{
+//	if (!this->derived_images.empty())
+//	{
+//		//deleting all derived images
+//        for (auto & derived_image : this->derived_images)
+//        {
+//
+//            delete derived_image;
+//        }
+//	}
+//}
 
 std::string Image::get_name() const
 {

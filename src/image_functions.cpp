@@ -1,4 +1,4 @@
-#include "../include/main.h"
+#include "image_functions.h"
 
 
 //enables resizing window while opening
@@ -22,16 +22,15 @@ cv::Mat resize_image(cv::Mat& image, double zoom_factor) {
 	return image;
 }
 
-void load_images(std::vector<Image>& dst)
+void load_images(const std::string& src, std::vector<Image>& dst)
 {
 
-	std::string path_to_images = "../images";
-	for (const auto& entry : std::filesystem::directory_iterator(path_to_images))
+	for (const auto& entry : std::filesystem::directory_iterator(src))
 	{
         //converting types for appropriate usage of references
-		const std::string image_path{ entry.path().u8string() };
+		auto image_path{ entry.path().u8string() };
         //ignoring .gitignore in /images
-		if (image_path == (path_to_images + "\\.gitignore"))
+		if (image_path == (src + "/.gitignore"))
 		{
 			continue;
 		}
@@ -40,7 +39,7 @@ void load_images(std::vector<Image>& dst)
 		std::string name;
 		for (auto letter = image_path.rbegin(); letter != image_path.rend(); letter++)
 		{
-			if (*letter != '\\')
+			if (*letter != '/')
 			{
 				name += *letter;
 			}
@@ -84,7 +83,7 @@ void load_images(std::vector<Image>& dst)
 	}
 }
 
-[[maybe_unused]] void show_images(std::vector<Image>& images)
+void show_images(const std::vector<Image>& images)
 {
 	int x_pos = 50;
 	int y_pos = 50;
