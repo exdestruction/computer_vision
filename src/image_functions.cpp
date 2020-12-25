@@ -1,4 +1,5 @@
-#include "main.h"
+#include "../include/main.h"
+
 
 //enables resizing window while opening
 cv::Mat resize_image(cv::Mat& image, double zoom_factor) {
@@ -12,8 +13,8 @@ cv::Mat resize_image(cv::Mat& image, double zoom_factor) {
 	}
 	int type = (image).type();
 
-	uchar depth = type & CV_MAT_DEPTH_MASK;
-	uchar chans = 1 + (type >> CV_CN_SHIFT);
+    [[maybe_unused]] uchar depth = type & CV_MAT_DEPTH_MASK;
+    [[maybe_unused]] uchar channels = 1 + (type >> CV_CN_SHIFT);
 
 	new_size.height = (int)(image.rows * zoom_factor);
 	new_size.width = (int)(image.cols * zoom_factor);
@@ -21,20 +22,22 @@ cv::Mat resize_image(cv::Mat& image, double zoom_factor) {
 	return image;
 }
 
-void load_images(std::vector<Image*>& dst)
+void load_images(std::vector<Image>& dst)
 {
 
-	std::string path_to_images = "..\\images";
+	std::string path_to_images = "../images";
 	for (const auto& entry : std::filesystem::directory_iterator(path_to_images))
 	{
-		const std::string image_path{ entry.path().u8string() };				//converting types for appopriate usage of references
-		if (image_path == (path_to_images + "\\.gitignore"))			//ignoring .gitignore in /images
+        //converting types for appropriate usage of references
+		const std::string image_path{ entry.path().u8string() };
+        //ignoring .gitignore in /images
+		if (image_path == (path_to_images + "\\.gitignore"))
 		{
 			continue;
 		}
 
 		//extracting name from the path
-		std::string name{ "" };
+		std::string name;
 		for (auto letter = image_path.rbegin(); letter != image_path.rend(); letter++)
 		{
 			if (*letter != '\\')
@@ -57,7 +60,7 @@ void load_images(std::vector<Image*>& dst)
 		cv::Mat image = cv::imread(image_path, cv::IMREAD_COLOR);
 
 		//safety checking
-		if (image.data == 0) {
+		if (image.data == nullptr) {
 			std::cout << "File " << name << " is invalid for OpenCV\n";
 			continue;
 		}
@@ -69,8 +72,8 @@ void load_images(std::vector<Image*>& dst)
 		else
 		{
 			image = resize_image(image, 0.4);
-			Image* image_obj = new Image(name, image);
-			dst.push_back(image_obj);
+			auto image_obj = new Image(name, image);
+			dst.push_back(*image_obj);
 		}
 #ifdef SINGLE_IMAGE
 		if (dst.size() == 1)
@@ -81,42 +84,52 @@ void load_images(std::vector<Image*>& dst)
 	}
 }
 
-void show_images(const std::vector<Image*> images)
+[[maybe_unused]] void show_images(std::vector<Image>& images)
 {
 	int x_pos = 50;
 	int y_pos = 50;
-	std::vector<Image*> images_traversed{ traverse(images) };
-	for (const auto& image : images_traversed)
+//	std::vector<Image*> images_traversed{ traverse(images) };
+	for (const auto& image : images)
 	{
-		const std::string name = image->get_name();
+		const std::string name = image.get_name();
 		cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
 		cv::moveWindow(name, x_pos, y_pos);
-		cv::imshow(name, image->get_image());
+		cv::imshow(name, image.get_image());
 		x_pos += 100;
 		y_pos += 30;
 	}
 }
 
-std::vector<Image*> traverse(const std::vector<Image*> images)
-{
-	if (images.empty())
-	{
-		return {};
-	}
-	std::vector<Image*> result{};
-	for (auto& image : images)
-	{
-		result.push_back(image);
-		auto derived = traverse(image->get_derived_images());
-		result.insert(result.end(), derived.begin(), derived.end());
-	}
-	return result;
-}
+//void write_images(const std::vector<Image*> images)
+//{
+//	std::vector<Image*> images_traversed{ traverse(images) };
+//	for (const auto& image : images_traversed)
+//	{
+//		const std::string name = image->get_name();
+//		cv::imwrite("../images/processed/" + name, image->get_image());
+//	}
+//}
+
+//std::vector<Image> traverse(const std::vector<Image> images)
+//{
+//	if (images.empty())
+//	{
+//		return {};
+//	}
+//	std::vector<Image> result{};
+//	for (auto& image : images)
+//	{
+//		result.push_back(image);
+//		auto derived = traverse(image.get_derived_images());
+//		result.insert(result.end(), derived.begin(), derived.end());
+//	}
+//	return result;
+//}
 
 
 
 
-cv::Mat illuminate(cv::Mat src, double k)
+cv::Mat illuminate(cv::Mat& src, double k)
 {
 	cv::Mat filtered_image = cv::Mat::zeros(src.size(), src.type()); 
 	cv::Mat illuminated_image = cv::Mat::zeros(src.size(), src.type());

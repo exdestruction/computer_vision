@@ -4,8 +4,8 @@
 #include <filesystem>
 
 #include "opencv2/opencv.hpp"
-#include "image_functions/Image.h"
-#include "image_functions/image_functions.h"
+#include "Image.h"
+#include "image_functions.h"
 
 //#define SINGLE_IMAGE
 //#define IMAGE_NAME "redbull.bmp"
