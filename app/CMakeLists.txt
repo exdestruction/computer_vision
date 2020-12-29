@@ -7,27 +7,48 @@ set(target_name ${CMAKE_PROJECT_NAME})
 if(WIN32)
 	set(OpenCV_DIR "d:/libs/opencv-2.4.8/build")
 else()
-	set(OpenCV_DIR "/opt/opencv/release")
+	set(OpenCV_DIR "/opt/opencv/release")	
 endif()
 
+
+find_package( PkgConfig REQUIRED)
+
+pkg_search_module( TESSERACT REQUIRED tesseract )
+
+pkg_search_module( LEPTONICA REQUIRED lept )
+
+
+# link_directories( ${TESSERACT_LIBRARY_DIRS} )
+
+# link_directories( ${LEPTONICA_LIBRARY_DIRS} )
+
+#looking for packages
 find_package(OpenCV REQUIRED)
-#
-#include_directories(${CMAKE_SOURCE_DIR})
-#
-#include_directories(${OpenCV_INCLUDE_DIRS}) # not needed for opencv>=4.0
-#add_subdirectory(include)
+
+
+include_directories(${TESSERACT_INCLUDE_DIRS})
+include_directories( ${Leptonica_INCLUDE_DIRS} )
+
+
 set(SOURCE "")
 
-file(GLOB SOURCE ../src/*.cpp ./*.cpp)
+file(GLOB SOURCE ../src/*.cpp *.cpp ../include/*.h ../include/*.hpp)
 
 add_executable(${target_name} ${SOURCE})
 
 target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
+# target_link_libraries(${target_name} PRIVATE ${Leptonica_LIBRARIES})
+target_link_libraries(${target_name} PRIVATE ${TESSERACT_LIBRARIES})
+# target_link_libraries(${target_name} PRIVATE libtesseract)
 
-target_include_directories(${target_name} PRIVATE ../include)
 
-target_include_directories(${target_name} PRIVATE ${CMAKE_SOURCE_DIR})
+#adding include directories to compiler
+# target_include_directories(${target_name} PRIVATE ${Tesseract_INCLUDE_DIRS})
+# target_include_directories(${target_name} PRIVATE ${Leptonica_INCLUDE_DIRS})
 
+target_include_directories(${target_name} PRIVATE ${CMAKE_SOURCE_DIR}/include )
+
+#making cmake variables to interract with the code
 configure_file (
 		"${CMAKE_SOURCE_DIR}/include/cmake_variables/cmake_variables.h.in"
 		"${CMAKE_SOURCE_DIR}/include/cmake_variables/cmake_variables.h")
