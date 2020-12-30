@@ -30,7 +30,7 @@ void load_images(const std::string& src, std::vector<Image>& dst)
         //converting types for appropriate usage of references
 		auto image_path{ entry.path().u8string() };
         //ignoring .gitignore in /images
-		if (image_path == (src + "/.gitignore"))
+		if (image_path == (src + ".gitignore"))
 		{
 			continue;
 		}
@@ -97,35 +97,11 @@ void show_images(const std::vector<Image>& images)
 		x_pos += 100;
 		y_pos += 30;
 	}
+
+    cv::waitKey();
+    cv::destroyAllWindows();
+
 }
-
-//void write_images(const std::vector<Image*> images)
-//{
-//	std::vector<Image*> images_traversed{ traverse(images) };
-//	for (const auto& image : images_traversed)
-//	{
-//		const std::string name = image->get_name();
-//		cv::imwrite("../images/processed/" + name, image->get_image());
-//	}
-//}
-
-//std::vector<Image> traverse(const std::vector<Image> images)
-//{
-//	if (images.empty())
-//	{
-//		return {};
-//	}
-//	std::vector<Image> result{};
-//	for (auto& image : images)
-//	{
-//		result.push_back(image);
-//		auto derived = traverse(image.get_derived_images());
-//		result.insert(result.end(), derived.begin(), derived.end());
-//	}
-//	return result;
-//}
-
-
 
 
 cv::Mat illuminate(cv::Mat& src, double k)

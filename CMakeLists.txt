@@ -92,7 +92,6 @@ endif()
 #endif()
 
 #add_subdirectory(include)
-add_subdirectory(src)
 add_subdirectory(app)
 
 #option(ENABLE_UNITY "Enable Unity builds of projects" OFF)

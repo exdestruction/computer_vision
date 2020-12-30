@@ -1,6 +1,8 @@
 #include "Image.h"
 
-Image::Image(std::string name, cv::Mat image) : m_name(name), m_image(image) {}
+#include <utility>
+
+Image::Image(std::string name, cv::Mat image) : m_name(std::move(name)), m_image(std::move(image)) {}
 
 //Image::~Image()
 //{
@@ -22,7 +24,6 @@ std::string Image::get_name() const
 
 cv::Mat Image::get_image() const
 {
-//	cv::Mat image = this->image;
 	return this->m_image;
 }
 
