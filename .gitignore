@@ -1,6 +1,6 @@
 # Not igrore
 !.gitignore
-!images/.gitignore
+!data/.gitignore
 
 #Ignore
 /bin*

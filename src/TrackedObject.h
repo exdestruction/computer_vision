@@ -1,0 +1,18 @@
+
+
+
+
+
+
+
+
+#ifndef IMAGE_PROCESSING_TRACKEDOBJECT_H
+#define IMAGE_PROCESSING_TRACKEDOBJECT_H
+
+
+class TrackedObject {
+
+};
+
+
+#endif //IMAGE_PROCESSING_TRACKEDOBJECT_H

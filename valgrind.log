@@ -1,0 +1,776 @@
+==25911== Memcheck, a memory error detector
+==25911== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==25911== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==25911== Command: ./image_processing --leak-check=full
+==25911== 
+--25911-- WARNING: unhandled amd64-linux syscall: 315
+--25911-- You may be able to write your own handler.
+--25911-- Read the file README_MISSING_SYSCALL_OR_IOCTL.
+--25911-- Nevertheless we consider this a bug.  Please report
+--25911-- it at http://valgrind.org/support/bug_reports.html.
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x543D738: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28)
+==25911==    by 0x10DC20: Image::get_name[abi:cxx11]() const (Image.cpp:25)
+==25911==    by 0x111B86: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:231)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x5069D08: cv::Mat::Mat(cv::Mat const&) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x10DC52: Image::get_image() const (Image.cpp:30)
+==25911==    by 0x111B9F: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:233)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x5069D59: cv::Mat::Mat(cv::Mat const&) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x10DC52: Image::get_image() const (Image.cpp:30)
+==25911==    by 0x111B9F: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:233)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x5069D61: cv::Mat::Mat(cv::Mat const&) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x10DC52: Image::get_image() const (Image.cpp:30)
+==25911==    by 0x111B9F: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:233)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F11F: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7DA5E: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F00E: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7DA5E: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F0CF: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7DA5E: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F11F: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7E0DF: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F00E: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7E0DF: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F0CF: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7E0DF: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F11F: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7E1CB: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F00E: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7E1CB: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D5F0CF: void cv::opt_AVX2::(anonymous namespace)::hlineSmooth3N121<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>(unsigned char const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16 const*, int, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D7E1CB: cv::opt_AVX2::(anonymous namespace)::fixedSmoothInvoker<unsigned char, cv::opt_AVX2::(anonymous namespace)::ufixedpoint16>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D81CE9: void cv::opt_AVX2::GaussianBlurFixedPoint<unsigned short>(cv::Mat const&, cv::Mat&, unsigned short const*, int, unsigned short const*, int, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4BCF5ED: cv::GaussianBlur(cv::_InputArray const&, cv::_OutputArray const&, cv::Size_<int>, double, double, int) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EA81: std::vector<Image, std::allocator<Image> >::end() const (stl_vector.h:836)
+==25911==    by 0x10E5E2: std::vector<Image, std::allocator<Image> >::empty() const (stl_vector.h:1005)
+==25911==    by 0x10DCA7: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:37)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EA29: std::vector<Image, std::allocator<Image> >::begin() const (stl_vector.h:818)
+==25911==    by 0x10E5F2: std::vector<Image, std::allocator<Image> >::empty() const (stl_vector.h:1005)
+==25911==    by 0x10DCA7: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:37)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10E7DB: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:112)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10E7E3: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:112)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EB0A: __gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >::__normal_iterator(Image* const&) (stl_iterator.h:807)
+==25911==    by 0x10E6A1: std::vector<Image, std::allocator<Image> >::end() (stl_vector.h:827)
+==25911==    by 0x10E845: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8E8: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F4F4: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1755)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8F0: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F4F4: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1755)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8E8: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F520: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1758)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8F0: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F520: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1758)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8E8: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F52F: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1758)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8F0: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F52F: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1758)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8E8: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F55C: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1759)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8F0: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x10F55C: std::vector<Image, std::allocator<Image> >::_M_check_len(unsigned long, char const*) const (stl_vector.h:1759)
+==25911==    by 0x10EBB9: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:435)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EBC2: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:437)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EBCD: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:438)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EB0A: __gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >::__normal_iterator(Image* const&) (stl_iterator.h:807)
+==25911==    by 0x10E651: std::vector<Image, std::allocator<Image> >::begin() (stl_vector.h:809)
+==25911==    by 0x10EBE0: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:439)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED03: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:501)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED37: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:502)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED42: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:503)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED6C: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:504)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EB0A: __gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >::__normal_iterator(Image* const&) (stl_iterator.h:807)
+==25911==    by 0x10E6A1: std::vector<Image, std::allocator<Image> >::end() (stl_vector.h:827)
+==25911==    by 0x10EE5A: std::vector<Image, std::allocator<Image> >::back() (stl_vector.h:1143)
+==25911==    by 0x10E866: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:123)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111D12: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:244)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EA81: std::vector<Image, std::allocator<Image> >::end() const (stl_vector.h:836)
+==25911==    by 0x10E5E2: std::vector<Image, std::allocator<Image> >::empty() const (stl_vector.h:1005)
+==25911==    by 0x10DCA7: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:37)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EA29: std::vector<Image, std::allocator<Image> >::begin() const (stl_vector.h:818)
+==25911==    by 0x10E5F2: std::vector<Image, std::allocator<Image> >::empty() const (stl_vector.h:1005)
+==25911==    by 0x10DCA7: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:37)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EB0A: __gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >::__normal_iterator(Image* const&) (stl_iterator.h:807)
+==25911==    by 0x10E651: std::vector<Image, std::allocator<Image> >::begin() (stl_vector.h:809)
+==25911==    by 0x10DCD3: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:39)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EB0A: __gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >::__normal_iterator(Image* const&) (stl_iterator.h:807)
+==25911==    by 0x10E6A1: std::vector<Image, std::allocator<Image> >::end() (stl_vector.h:827)
+==25911==    by 0x10DCE9: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:39)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10E7DB: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:112)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10E7E3: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:112)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EBC2: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:437)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EBCD: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:438)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED03: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:501)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED37: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:502)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED42: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:503)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED6C: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:504)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111DE7: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:250)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D5CE: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D5D9: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D5E4: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D5F8: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D638: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D660: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D688: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0D6B4: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0DC18: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D0DC2D: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0DC32: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0DC52: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D0DC6B: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0DC70: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D0DC86: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0DC9C: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x4D0DCFB: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Conditional jump or move depends on uninitialised value(s)
+==25911==    at 0x4D0DD18: cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b::operator()(unsigned char const*, unsigned char*, int) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x4D0DDD1: cv::hal::opt_AVX2::(anonymous namespace)::CvtColorLoop_Invoker<cv::hal::opt_AVX2::(anonymous namespace)::RGB2HSV_b>::operator()(cv::Range const&) const (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x50E2AF7: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::execute() (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A8F0E4: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::process_bypass_loop(tbb::internal::context_guard_helper<false>&, tbb::task*, long) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8F47D: tbb::internal::custom_scheduler<tbb::internal::IntelSchedulerTraits>::local_wait_for_all(tbb::task&, tbb::task*) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x6A8D847: tbb::internal::generic_scheduler::local_spawn_root_and_wait(tbb::task*, tbb::task*&) (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E31A5: tbb::interface9::internal::start_for<tbb::blocked_range<int>, cv::(anonymous namespace)::ProxyLoopBody, tbb::auto_partitioner const>::run(tbb::blocked_range<int> const&, cv::(anonymous namespace)::ProxyLoopBody const&, tbb::auto_partitioner const&) [clone .isra.0] [clone .constprop.0] (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x50E320E: tbb::interface7::internal::delegated_function<cv::(anonymous namespace)::ProxyLoopBody, void>::operator()() const (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x6A7DE50: tbb::interface7::internal::task_arena_base::internal_execute(tbb::interface7::internal::delegate_base&) const (in /opt/opencv/release/lib/libtbb.so)
+==25911==    by 0x50E34DC: cv::parallel_for_(cv::Range const&, cv::ParallelLoopBody const&, double) (in /opt/opencv/release/lib/libopencv_core.so.4.5.1)
+==25911==    by 0x4D12758: cv::hal::opt_AVX2::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911==    by 0x49EEA90: cv::hal::cvtBGRtoHSV(unsigned char const*, unsigned long, unsigned char*, unsigned long, int, int, int, int, bool, bool, bool) (in /opt/opencv/release/lib/libopencv_imgproc.so.4.5.1)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EA81: std::vector<Image, std::allocator<Image> >::end() const (stl_vector.h:836)
+==25911==    by 0x10E5E2: std::vector<Image, std::allocator<Image> >::empty() const (stl_vector.h:1005)
+==25911==    by 0x10DCA7: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:37)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EA29: std::vector<Image, std::allocator<Image> >::begin() const (stl_vector.h:818)
+==25911==    by 0x10E5F2: std::vector<Image, std::allocator<Image> >::empty() const (stl_vector.h:1005)
+==25911==    by 0x10DCA7: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:37)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EB0A: __gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >::__normal_iterator(Image* const&) (stl_iterator.h:807)
+==25911==    by 0x10E651: std::vector<Image, std::allocator<Image> >::begin() (stl_vector.h:809)
+==25911==    by 0x10DCD3: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:39)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EB0A: __gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >::__normal_iterator(Image* const&) (stl_iterator.h:807)
+==25911==    by 0x10E6A1: std::vector<Image, std::allocator<Image> >::end() (stl_vector.h:827)
+==25911==    by 0x10DCE9: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:39)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10E7DB: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:112)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10E7E3: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:112)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EBC2: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:437)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10EBCD: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:438)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED03: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:501)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED37: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:502)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED42: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:503)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10ED6C: void std::vector<Image, std::allocator<Image> >::_M_realloc_insert<Image>(__gnu_cxx::__normal_iterator<Image*, std::vector<Image, std::allocator<Image> > >, Image&&) (vector.tcc:504)
+==25911==    by 0x10E85A: Image& std::vector<Image, std::allocator<Image> >::emplace_back<Image>(Image&&) (vector.tcc:121)
+==25911==    by 0x10DE0F: Image::add_derived_image(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cv::Mat) (Image.cpp:49)
+==25911==    by 0x111ECE: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:258)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x1136CA: std::vector<Image, std::allocator<Image> >::operator[](unsigned long) (stl_vector.h:1043)
+==25911==    by 0x111F11: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:263)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8E8: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x111F3D: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:264)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== Use of uninitialised value of size 8
+==25911==    at 0x10F8F0: std::vector<Image, std::allocator<Image> >::size() const (stl_vector.h:916)
+==25911==    by 0x111F3D: create_tracking_objects(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (image_functions.cpp:264)
+==25911==    by 0x11472D: main (main.cpp:13)
+==25911== 
+==25911== 
+==25911== HEAP SUMMARY:
+==25911==     in use at exit: 5,374,911 bytes in 26,547 blocks
+==25911==   total heap usage: 2,484,608 allocs, 2,458,061 frees, 198,183,917 bytes allocated
+==25911== 
+==25911== LEAK SUMMARY:
+==25911==    definitely lost: 8,016 bytes in 31 blocks
+==25911==    indirectly lost: 12,365 bytes in 533 blocks
+==25911==      possibly lost: 42,532 bytes in 60 blocks
+==25911==    still reachable: 5,220,742 bytes in 25,200 blocks
+==25911==                       of which reachable via heuristic:
+==25911==                         length64           : 5,136 bytes in 87 blocks
+==25911==                         newarray           : 2,112 bytes in 52 blocks
+==25911==         suppressed: 0 bytes in 0 blocks
+==25911== Rerun with --leak-check=full to see details of leaked memory
+==25911== 
+==25911== Use --track-origins=yes to see where uninitialised values come from
+==25911== For lists of detected and suppressed errors, rerun with: -s
+==25911== ERROR SUMMARY: 1176954 errors from 79 contexts (suppressed: 0 from 0)

@@ -22,6 +22,7 @@ cv::Mat resize_image(cv::Mat& image, double zoom_factor) {
 	return image;
 }
 
+
 void load_images(const std::string& src, std::vector<Image>& dst)
 {
 
@@ -29,7 +30,7 @@ void load_images(const std::string& src, std::vector<Image>& dst)
 	{
         //converting types for appropriate usage of references
 		auto image_path{ entry.path().u8string() };
-        //ignoring .gitignore in /images
+        //ignoring .gitignore in /data
 		if (image_path == (src + ".gitignore"))
 		{
 			continue;
@@ -71,8 +72,8 @@ void load_images(const std::string& src, std::vector<Image>& dst)
 		else
 		{
 			image = resize_image(image, 0.4);
-			auto image_obj = new Image(name, image);
-			dst.push_back(*image_obj);
+//			auto image_obj = new Image(name, image);
+			dst.emplace_back(Image(name, image));
 		}
 #ifdef SINGLE_IMAGE
 		if (dst.size() == 1)
@@ -83,26 +84,74 @@ void load_images(const std::string& src, std::vector<Image>& dst)
 	}
 }
 
+
 void show_images(const std::vector<Image>& images)
 {
-	int x_pos = 50;
-	int y_pos = 50;
-//	std::vector<Image*> images_traversed{ traverse(images) };
-	for (const auto& image : images)
+	if(images.empty())
 	{
-		const std::string name = image.get_name();
-		cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
-		cv::moveWindow(name, x_pos, y_pos);
-		cv::imshow(name, image.get_image());
-		x_pos += 100;
-		y_pos += 30;
+		return;
+	}
+	const std::string original_name = "Original image";
+	cv::namedWindow(original_name, cv::WINDOW_AUTOSIZE);
+	cv::moveWindow(original_name,0, 0);
+
+	cv::namedWindow("Processed image", cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Processed image", images[0].get_image().cols + 1, 0);
+
+//	Image* image = nullptr;
+	for(int i, j = 0;;)
+	{
+		auto* image = &images[i];
+		const std::string name = image->get_name();
+
+		//show original image
+		cv::imshow(original_name, image->get_image());
+
+		auto derived = image->get_derived_images()[j];
+		auto derived_size = image->get_derived_images().size();
+		cv::imshow("Processed image", derived.get_image());
+
+
+		int button = cv::waitKey() & 255;
+		switch(char(button)) {
+			default:
+				break;
+			case 's':
+				if (i < images.size() - 1)
+				{
+					++i;
+					j = 0;
+				}
+				break;
+			case 'w':
+				if (i > 0)
+				{
+					--i;
+					j = 0;
+				}
+				break;
+			case 'd':
+				if ( j + 1 < derived_size)
+				{
+					++j;
+				}
+				break;
+			case 'a':
+				if (j > 0)
+				{
+					--j;
+				}
+				break;
+		}
+		//if ESC pressed
+		if (char(button) == 27)
+		{
+			cv::destroyAllWindows();
+			break;
+		}
 	}
 
-    cv::waitKey();
-    cv::destroyAllWindows();
-
 }
-
 
 cv::Mat illuminate(cv::Mat& src, double k)
 {
@@ -123,4 +172,148 @@ cv::Mat illuminate(cv::Mat& src, double k)
 	}
 	
 	return illuminated_image;
+}
+
+
+std::vector<TrackedObject> create_tracking_objects(const std::string& path) {
+	std::vector<TrackedObject> objects{};
+	//PSEUDOCODE
+	// 1. get images
+	// 1.1. check if images are in the folder
+	// 1.2. load images in vector of cv::Mat
+
+
+	// loading data from ./data/images to memory
+	std::vector<Image> images;
+	load_images(path + "images/", images);
+
+	//checking if there is any image
+	if (images.empty()) {
+		std::cout << "Images not found\n";
+		return objects;
+	}
+
+	// 	2. process image to extract labels
+	// 		2.2. filter the image
+	// 		2.3. adjust contrast
+	// 		2.4. apply thresholding operations
+	// 			2.4.1. if the is already properties in .json -> use them
+	// 			2.4.2. if none -> open up the images and choose them manually
+	//				2.4.2.1. Add properties (HSV/RGB threshold values) to .json file
+
+	// 	2.5. optimize binary image
+	// 		2.5.1 apply morphological operators to eliminate noise
+
+
+	// 	2.6. detect letters
+	// 		2.6.1 look for contours, that contain no objects within ??
+	// 		2.6.1 check if contour has straight lines ???
+	// 		2.6.1. check for relative location of the objects to detect words???
+
+	//        		check the larges box of neat objects combined ???
+
+
+	// 3. pass labels to tesseract to get strings
+	// initialize tesseract obj ...
+
+	// 4. assign these strings to "name" property  of the object
+
+
+
+
+
+	//check if there is JSON file with properties
+	if (std::filesystem::exists(path + "HSV_properties.json")) {
+		//get properties from .json if exist
+	} else {
+		//create properties manually
+	}
+
+
+
+	// main image processing operations
+	// here is used access via index, because of storing all
+	// other data in the same vector, initialized values limit iterations only through
+	// original data, not the added one after
+	cv::namedWindow("Original image", cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Original image",0, 0);
+	cv::namedWindow("Processed image", cv::WINDOW_AUTOSIZE);
+	cv::moveWindow("Processed image", images[0].get_image().cols + 1, 0);
+
+	for (auto &image: images) {
+		const std::string name = image.get_name();
+		cv::Mat processed_image = image.get_image().clone();
+
+		if (name == "fanta.bmp") {
+			cv::GaussianBlur(processed_image, processed_image, cv::Size(3, 3),
+							 0, 0);
+		}
+		image.add_derived_image(name + " blurred", processed_image.clone());
+
+
+
+		//Tuning original image
+		processed_image.convertTo(processed_image, -1, 2.6, -120);
+		image.add_derived_image(name + " tuned", processed_image.clone());
+
+		//convert to HSV
+//		cv::cvtColor(image->get_image(), image_ver2, cv::COLOR_BGR2HSV);
+//		image->add_derived_image(name + " HSV original", image_ver2);
+
+		//convert to HSV
+		cv::cvtColor(processed_image, processed_image, cv::COLOR_BGR2HSV);
+		image.add_derived_image(name + " HSV", processed_image.clone());
+
+
+		std::array<int, 3> HSV_MIN_VALUES = {0, 0, 0},
+				HSV_MAX_VALUES = {255, 255, 255};
+		create_trackbars(HSV_MIN_VALUES, HSV_MAX_VALUES);
+
+		cv::Mat threshold_image = processed_image.clone();
+		cv::imshow("Original image", image.get_image());
+		for (;;) {
+			cv::inRange(processed_image,
+						cv::Scalar(HSV_MIN_VALUES[0], HSV_MIN_VALUES[1], HSV_MIN_VALUES[2]),
+						cv::Scalar(HSV_MAX_VALUES[0], HSV_MAX_VALUES[1], HSV_MAX_VALUES[2]),
+						threshold_image);
+
+
+			cv::imshow("Processed image", threshold_image);
+			auto key = (char) cv::waitKey(30);
+			if (key == 27)
+			{
+				break;
+			}
+		}
+		image.add_derived_image(name + " Threshold", threshold_image);
+
+
+	}
+
+
+	//show images in debug mode
+	show_images(images);
+	return objects;
+}
+
+
+
+void track_objects(int source, std::vector<TrackedObject>& objects)
+{
+	//tracking with color???
+	//tracking due to movement???
+
+
+
+
+
+	//create video stream
+//    cv::VideoCapture capture(source);
+
+	//iterating through objects
+	//make frame binary and detect object due to properties
+	//create bounding box over the object
+	//add name of the objects
+
+	// wait for key to close video stream
 }

@@ -2,14 +2,19 @@
 
 #include <utility>
 
-Image::Image(std::string name, cv::Mat image) : m_name(std::move(name)), m_image(std::move(image)) {}
+
+Image::Image(std::string name, cv::Mat image):
+		m_name(std::move(name)),
+		m_image(std::move(image)) {}
+
+Image::~Image() = default;
 
 //Image::~Image()
 //{
-//	if (!this->derived_images.empty())
+//	if (!this->m_derived_images.empty())
 //	{
-//		//deleting all derived images
-//        for (auto & derived_image : this->derived_images)
+//		//deleting all derived data
+//        for (auto & derived_image : this->m_derived_images)
 //        {
 //
 //            delete derived_image;
@@ -27,13 +32,27 @@ cv::Mat Image::get_image() const
 	return this->m_image;
 }
 
-//void Image::add_derived_image(std::string name, cv::Mat image)
-//{
-////	auto derived_image = new Image(name, image);
-//	this->derived_images.push_back(new Image(name, image));
-//}
+void Image::add_derived_image(const std::string& name, cv::Mat image)
+{
+	//	auto derived_image = new Image(name, image);
+	bool unique = true;
+	if (!m_derived_images.empty())
+	{
+		for (auto& derived_image: m_derived_images)
+		{
+			if (name == derived_image.get_name())
+			{
+				unique = false;
+			}
+		}
+	}
+	if (unique)
+	{
+		this->m_derived_images.emplace_back(Image(name, std::move(image)));
+	}
+}
 
-//std::vector<Image*> Image::get_derived_images()
-//{
-//	return this->derived_images;
-//}
+const std::vector<Image>& Image::get_derived_images() const
+{
+	return this->m_derived_images;
+}
