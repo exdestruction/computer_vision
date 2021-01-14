@@ -1,5 +1,6 @@
 #pragma once
 //#include "main.h"
+#include <iostream>
 #include <vector>
 #include <filesystem>
 #include <fstream>
@@ -13,7 +14,7 @@
 class Image;
 
 
-cv::Mat resize_image(cv::Mat& image, double zoom_factor);
+cv::Mat resize_image(cv::Mat image, double zoom_factor);
 //static void show_binary(const std::string name, cv::Mat* image, int threshold);
 void load_images(const std::string& src_path, std::vector<Image>& dst);
 void show_images(const std::vector<Image>& images);
