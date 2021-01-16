@@ -8,11 +8,12 @@
 #include "Image.h"
 #include "TrackedObject.h"
 #include "trackbars.h"
+#include "orb_functions.h"
 
-#include "json.hpp"
+//#include "json.hpp"
 
 //#define SINGLE_IMAGE
-//#define IMAGE_NAME "fanta.bmp"
+//#define IMAGE_NAME "orangensaft.bmp"
 
 class Image;
 
@@ -23,7 +24,7 @@ void load_images(const std::string& src_path, std::vector<Image>& dst);
 void show_images(const std::vector<Image>& images);
 //std::vector<Image*> traverse(const std::vector<Image*> data);
 
-cv::Mat illuminate(cv::Mat& src, double k);
+void illuminate(cv::Mat &src, cv::Mat &output, double k);
 
 std::vector<TrackedObject> create_tracking_objects(const std::string& path);
 

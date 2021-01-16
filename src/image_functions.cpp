@@ -149,10 +149,10 @@ void show_images(const std::vector<Image>& images)
 	}
 
 }
-cv::Mat illuminate(cv::Mat& src, double k)
+void illuminate(cv::Mat &src, cv::Mat &output, double k)
 {
-	cv::Mat filtered_image = cv::Mat::zeros(src.size(), src.type()); 
-	cv::Mat illuminated_image = cv::Mat::zeros(src.size(), src.type());
+	cv::Mat filtered_image = cv::Mat::zeros(src.size(), src.type());
+//	cv::Mat illuminated_image = cv::Mat::zeros(src.size(), src.type());
 
 	uchar brightness = (cv::sum(src)[0]) / ((double)src.rows * (double)src.cols);
 
@@ -163,12 +163,11 @@ cv::Mat illuminate(cv::Mat& src, double k)
 	{
 		for (int x = 0; x < src.cols; x++)
 		{
-			illuminated_image.at<uchar>(y, x) = cv::saturate_cast<uchar>(src.at<uchar>(y, x) +
+			output.at<uchar>(y, x) = cv::saturate_cast<uchar>(src.at<uchar>(y, x) +
 			        			k * (brightness - filtered_image.at<uchar>(y, x)));
 		}
 	}
-	
-	return illuminated_image;
+
 }
 
 void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const std::string& filename,
@@ -232,7 +231,7 @@ void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const s
 }
 
 
-void preprocess(cv::Mat& image)
+void preprocess_image(cv::Mat& image)
 {
 
 
@@ -246,8 +245,37 @@ void preprocess(cv::Mat& image)
 	//Tuning original image
 	image.convertTo(image, -1, 2.6, -120);
 
-	//convert colors
-	cv::cvtColor(image, image, cv::COLOR_BGR2HSV);
+}
+
+void binary_mask_from_borders(cv::Mat& image)
+{
+	//#######################################################
+	std::vector<std::vector<cv::Point> > contours{};
+	std::vector<cv::Vec4i> hierarchy{};
+	cv::Mat contour_image = cv::Mat::zeros(image.size(), image.type());
+
+	cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
+//	illuminate(image, image, 0.5);
+//	cv::Canny(image, image, lower_threshold, upper_threshold, 3, true);
+	cv::adaptiveThreshold(image, image, 255, cv::THRESH_BINARY,
+					   cv::ADAPTIVE_THRESH_GAUSSIAN_C, 999, 10);
+	cv::findContours(image, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+	std::vector<std::vector<cv::Point> >hull(contours.size());
+	for( size_t i = 0; i < contours.size(); i++ )
+	{
+		convexHull( contours[i], hull[i] );
+	}
+	for( int i = 0; i < contours.size(); i++)
+	{
+		cv::drawContours(contour_image, contours, (int)i, cv::Scalar(255,0,0));
+		cv::drawContours(contour_image, hull, (int)i, cv::Scalar(0,255,0));
+	}
+//	cv::imshow("Contours",contour_image);
+//	cv::waitKey();
+//	cv::threshold(image, image, 0, 255,cv::THRESH_OTSU);
+
+	//#######################################################
 }
 
 
@@ -298,20 +326,25 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 	}
 
 	//iterate over all uploaded images to create object
-	for (auto &image: images) {
+	for (auto &image: images)
+	{
+		TrackedObject object{};
 		std::string name = image.get_name();
-
-		//#######################################################
-//		cv::Mat grayscale_image{};
-//		cv::cvtColor(image.get_image(), grayscale_image, cv::COLOR_BGR2GRAY);
-
-		//#######################################################
-
+		object.filename = image.get_name();
+		//######################################################################
+//		cv::Mat canny_image = image.get_image().clone();
+//
+//		preprocess_image(canny_image);
+//		binary_mask_from_borders(canny_image);
+//		image.add_derived_image(name + " canny image", canny_image);
+		//######################################################################
 
 		cv::Mat processed_image = image.get_image().clone();
 
 		//preprocess the image
-		preprocess(processed_image);
+		preprocess_image(processed_image);
+		//convert colors
+		cv::cvtColor(processed_image, processed_image, cv::COLOR_BGR2HSV);
 		image.add_derived_image(name + " preprocessed", processed_image.clone());
 
 		//choosing HSV limits
@@ -361,27 +394,37 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 			}
 		}
 
-//		cv::Mat threshold_image = processed_image.clone();
-//		cv::imshow("Original image", image.get_image());
+		object.HSV_min = HSV_MIN;
+		object.HSV_max = HSV_MAX;
+
+		//create binary mask
 		cv::Mat binary_mask{};
 		make_binary_mask(processed_image, binary_mask, name, HSV_MIN, HSV_MAX);
 		image.add_derived_image(name + " Threshold", binary_mask.clone());
 
-		//update given image with the binary mask
 
+		//update given image with the binary mask
 		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
 		image.get_image().copyTo(processed_image, binary_mask);
-//		cv::bitwise_and(image.get_image().clone(), binary_mask, processed_image);
-
 		image.add_derived_image(name + " with the mask", processed_image);
 
+		//detect key points in the image with ORB
+		object.image = image.get_image().clone();
+		object.keypoints = detect_keypoints(object.image);
+
+		//calculate descriptors (feature vectors)
+		drawKeypoints( object.image, object.keypoints, object.image);
+		image.add_derived_image(name + " keypoints", object.image.clone());
+
+		object.descriptor = extract_descriptor(object.image, object.keypoints);
+
 		//update created object to vector
-		objects.emplace_back(TrackedObject(name, HSV_MIN, HSV_MAX));
+		objects.emplace_back(object);
 	}
 
 
 	//show images in debug mode
-	if(!debug_mode)
+	if(debug_mode)
 	{
 		show_images(images);
 	}
@@ -404,7 +447,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
     	return;
 	}
     cv::Mat frame{};
-
+	const float ratio_thresh = 0.7f;
     for(;;)
 	{
     	//equivalent for capture.read(frame);
@@ -420,13 +463,60 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 
 
 
+//		for(auto& object: objects)
+//		{
+//			cv::Mat binary_image = frame.clone();
+//			preprocess_image(binary_image);
+//			cv::inRange(binary_image, object.get_HSV_min(), object.get_HSV_max(), binary_image);
+////			make_binary_mask(frame, binary_image, object.get_filename(), object.get_HSV_min(), object.get_HSV_max());
+//			cv::imshow("Binary", binary_image);
+//			cv::waitKey(30);
+//		}
+		auto keypoints = detect_keypoints(frame);
+		if (keypoints.empty())
+		{
+			continue;
+		}
+		auto descriptor = extract_descriptor(frame, keypoints);
+//		if(descriptor.empty())
+//		{
+//			continue;
+//		}
+
 		for(auto& object: objects)
 		{
-			cv::Mat binary_image = frame.clone();
-			preprocess(binary_image);
-			cv::inRange(binary_image, object.get_HSV_min(), object.get_HSV_max(), binary_image);
-//			make_binary_mask(frame, binary_image, object.get_filename(), object.get_HSV_min(), object.get_HSV_max());
-			cv::imshow("Binary", binary_image);
+//			frame.convertTo(frame, object.image.type());
+//			cv::drawKeypoints( frame, keypoints, frame);
+			if(object.descriptor.empty() || descriptor.empty())
+			{
+				continue;
+			}
+
+
+			auto knn_matches = match_descriptors(object.descriptor, descriptor);
+//
+//			if(knn_matches.empty())
+//			{
+//				continue;
+//			}
+			//-- Filter matches using the Lowe's ratio test
+			std::vector<cv::DMatch> good_matches{};
+			for(auto & knn_match : knn_matches)
+			{
+				if (knn_match[0].distance < ratio_thresh * knn_match[1].distance)
+				{
+					good_matches.push_back(knn_match[0]);
+				}
+			}
+//			cv::drawMatches(frame, good_matches, frame);
+			cv::Mat img_matches{};
+			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
+				good_matches, img_matches, cv::Scalar::all(-1),
+				cv::Scalar::all(-1),
+				std::vector<char>(),
+				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
+			//-- Show detected matches
+			cv::imshow("Good Matches", img_matches);
 			cv::waitKey(30);
 		}
 

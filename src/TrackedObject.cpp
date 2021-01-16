@@ -6,6 +6,6 @@
 
 #include <utility>
 
-TrackedObject::TrackedObject(std::string filename, std::array<int, 3> HSV_low,
-							 std::array<int, 3> HSV_high):
-		m_filename(std::move(filename)), m_HSV_high(HSV_high), m_HSV_low(HSV_low) {}
+TrackedObject::TrackedObject(std::string filename, std::array<int, 3> HSV_min,
+							 std::array<int, 3> HSV_max):
+		filename(std::move(filename)), HSV_max(HSV_max), HSV_min(HSV_min) {}
