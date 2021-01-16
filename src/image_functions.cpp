@@ -96,7 +96,7 @@ void show_images(const std::vector<Image>& images)
 	cv::moveWindow("Processed image", images[0].get_image().cols + 1, 0);
 
 //	Image* image = nullptr;
-	for(int i, j = 0;;)
+	for(int i = 0, j = 0;;)
 	{
 		auto* image = &images[i];
 		const std::string name = image->get_name();
@@ -171,33 +171,34 @@ cv::Mat illuminate(cv::Mat& src, double k)
 	return illuminated_image;
 }
 
-cv::Mat make_binary_mask(const cv::Mat& image, std::array<int, 3> HSV_MIN = {0,0,0}, std::array<int, 3> HSV_MAX = {0,0,0})
+void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const std::string& filename,
+					  std::array<int, 3> HSV_MIN = {0, 0, 0},
+					  std::array<int, 3> HSV_MAX = {0, 0, 0})
 {
-	cv::Mat binary_mask{};
-	bool white_borders = false;
-	//if image is grayscale
-	if (image.channels() == 1)
+//	cv::Mat output_image{};
+	//if input_image is grayscale
+	if (input_image.channels() == 1)
 	{
-		cv::threshold(image, binary_mask, 0, 255,
+		cv::threshold(input_image, output_image, 0, 255,
 					  cv::THRESH_OTSU);
-//		return binary_mask;
 	}
 	else
 	{
-		cv::inRange(image, HSV_MIN, HSV_MAX, binary_mask);
+		cv::inRange(input_image, HSV_MIN, HSV_MAX, output_image);
 	}
 
-
-	if (binary_mask.at<uchar>(int(binary_mask.rows/2), int(binary_mask.cols/2)) == 0)
+	//if object in binary input_image is black - inverse the input_image
+//	if (output_image.at<uchar>(int(output_image.rows / 2), int(output_image.cols / 2)) == 0)
+	if(filename == "orangensaft.bmp")
 	{
-		binary_mask = ~binary_mask;
+		output_image = ~output_image;
 	}
 
 
 //	//find enclosing contour with maximal area
 //	std::vector<std::vector<cv::Point>> contours;
 //	std::vector<cv::Vec4i> hierarchy;
-//	cv::findContours(binary_mask, contours, hierarchy,cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE );
+//	cv::findContours(output_image, contours, hierarchy,cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE );
 //	//fill inner area white
 //	std::vector<double> areas{};
 //	int max_area_index{};
@@ -214,35 +215,48 @@ cv::Mat make_binary_mask(const cv::Mat& image, std::array<int, 3> HSV_MIN = {0,0
 //			max_area = areas[i];
 //		}
 //	}
-//	cv::Mat binary_mask = cv::Mat::zeros(binary_mask.size(), CV_8U);
-//	cv::fillPoly(binary_mask, contours[max_area_index], 255);
+//	cv::Mat output_image = cv::Mat::zeros(output_image.size(), CV_8U);
+//	cv::fillPoly(output_image, contours[max_area_index], 255);
 
 	//morphological operations
-	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7,7), cv::Point(-1,-1));
+	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7,7),
+											 cv::Point(-1,-1));
 	//opening operations to eliminate all inner black regions
-	cv::dilate(binary_mask, binary_mask, element, cv::Point(-1, -1), 5);
-	cv::erode(binary_mask, binary_mask, element, cv::Point(-1, -1), 5);
+	cv::dilate(output_image, output_image, element, cv::Point(-1, -1), 5);
+	cv::erode(output_image, output_image, element, cv::Point(-1, -1), 5);
 
 	//closing operations to eliminate all outer noise
-	cv::erode(binary_mask, binary_mask, element);
-	cv::dilate(binary_mask, binary_mask, element);
+	cv::erode(output_image, output_image, element);
+	cv::dilate(output_image, output_image, element);
 
-
-	return binary_mask;
 }
 
 
-std::vector<TrackedObject> create_tracking_objects(const std::string& path) {
-	std::vector<TrackedObject> objects{};
-	TrackedObject tracked_object;
-	//PSEUDOCODE
-	// 1. get images
-	// 1.1. check if images are in the folder
-	// 1.2. load images in vector of cv::Mat
+void preprocess(cv::Mat& image)
+{
 
+
+//		if (name == "fanta.bmp")
+//		{
+//
+//		}
+	cv::GaussianBlur(image, image, cv::Size(5, 5),
+					 0, 0);
+
+	//Tuning original image
+	image.convertTo(image, -1, 2.6, -120);
+
+	//convert colors
+	cv::cvtColor(image, image, cv::COLOR_BGR2HSV);
+}
+
+
+std::vector<TrackedObject> create_tracking_objects(const std::string& path)
+{
+	std::vector<TrackedObject> objects{};
 
 	// loading data from ./data/images to memory
-	std::vector<Image> images;
+	std::vector<Image> images{};
 	load_images(path + "images/", images);
 
 	//checking if there is any image
@@ -251,48 +265,12 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path) {
 		return objects;
 	}
 
-	// 	2. process image to extract labels
-	// 		2.2. filter the image
-	// 		2.3. adjust contrast
-	// 		2.4. apply thresholding operations
-	// 			2.4.1. if the is already properties in .json -> use them
-	// 			2.4.2. if none -> open up the images and choose them manually
-	//				2.4.2.1. Add properties (HSV/RGB threshold values) to .json file
-
-	// 	2.5. optimize binary image
-	// 		2.5.1 apply morphological operators to eliminate noise
-
-
-	// 	2.6. detect letters
-	// 		2.6.1 look for contours, that contain no objects within ??
-	// 		2.6.1 check if contour has straight lines ???
-	// 		2.6.1. check for relative location of the objects to detect words???
-
-	//        		check the larges box of neat objects combined ???
-
-
-	// 3. pass labels to tesseract to get strings
-	// initialize tesseract obj ...
-
-	// 4. assign these strings to "name" property  of the object
-
-
-
-
-
-
-
-
-
 	// main image processing operations
 	// here is used access via index, because of storing all
 	// other data in the same vector, initialized values limit iterations only through
 	// original data, not the added one after
 
-	cv::namedWindow("Original image", cv::WINDOW_AUTOSIZE);
-	cv::moveWindow("Original image",0, 0);
-	cv::namedWindow("Processed image", cv::WINDOW_AUTOSIZE);
-	cv::moveWindow("Processed image", images[0].get_image().cols + 1, 0);
+
 
 	//enabling debug mode
 	bool debug_mode;
@@ -310,43 +288,38 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path) {
 		}
 	}
 
+	//initialize windows
+	if(debug_mode)
+	{
+		cv::namedWindow("Original image", cv::WINDOW_AUTOSIZE);
+		cv::moveWindow("Original image",0, 0);
+		cv::namedWindow("Processed image", cv::WINDOW_AUTOSIZE);
+		cv::moveWindow("Processed image", images[0].get_image().cols + 1, 0);
+	}
+
+	//iterate over all uploaded images to create object
 	for (auto &image: images) {
-		const std::string name = image.get_name();
+		std::string name = image.get_name();
+
+		//#######################################################
+//		cv::Mat grayscale_image{};
+//		cv::cvtColor(image.get_image(), grayscale_image, cv::COLOR_BGR2GRAY);
+
+		//#######################################################
+
+
 		cv::Mat processed_image = image.get_image().clone();
 
-//		if (name == "fanta.bmp")
-//		{
-//
-//		}
-		cv::GaussianBlur(processed_image, processed_image, cv::Size(5, 5),
-						 0, 0);
-		image.add_derived_image(name + " blurred", processed_image.clone());
+		//preprocess the image
+		preprocess(processed_image);
+		image.add_derived_image(name + " preprocessed", processed_image.clone());
 
-
-		//Tuning original image
-		processed_image.convertTo(processed_image, -1, 2.6, -120);
-		image.add_derived_image(name + " tuned", processed_image.clone());
-
-
-
-//		if(name == "orangensaft.bmp")
-//		{
-//			cv::cvtColor(processed_image, processed_image, cv::COLOR_BGR2HSV);
-//		}
-//		else if(name == "fanta.bmp")
-//		{
-//			//convert to HSV
-//			cv::cvtColor(processed_image, processed_image, cv::COLOR_BGR2HSV);
-//		}
-		//convert colors
-		cv::cvtColor(processed_image, processed_image, cv::COLOR_BGR2HSV);
-		image.add_derived_image(name + " HSV", processed_image.clone());
-
-
-
+		//choosing HSV limits
 		std::array<int, 3> HSV_MIN{}, HSV_MAX{};
+		//choose HSV limits
 		if (!debug_mode)
 		{
+			//pre-chosen HSV limits
 			if(name == "fanta.bmp")
 			{
 				HSV_MIN = {0, 69, 0};
@@ -360,6 +333,7 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path) {
 			}
 
 		}
+		//manually choose HSV limits
 		else
 		{
 			//check if there is JSON file with properties
@@ -387,19 +361,30 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path) {
 			}
 		}
 
-		tracked_object.set_HSV_max(HSV_MAX);
-		tracked_object.set_HSV_min(HSV_MIN);
-
 //		cv::Mat threshold_image = processed_image.clone();
 //		cv::imshow("Original image", image.get_image());
-		cv::Mat binary_mask = make_binary_mask(processed_image, HSV_MIN, HSV_MAX);
-		image.add_derived_image(name + " Threshold", binary_mask);
+		cv::Mat binary_mask{};
+		make_binary_mask(processed_image, binary_mask, name, HSV_MIN, HSV_MAX);
+		image.add_derived_image(name + " Threshold", binary_mask.clone());
 
+		//update given image with the binary mask
+
+		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
+		image.get_image().copyTo(processed_image, binary_mask);
+//		cv::bitwise_and(image.get_image().clone(), binary_mask, processed_image);
+
+		image.add_derived_image(name + " with the mask", processed_image);
+
+		//update created object to vector
+		objects.emplace_back(TrackedObject(name, HSV_MIN, HSV_MAX));
 	}
 
 
 	//show images in debug mode
-	show_images(images);
+	if(!debug_mode)
+	{
+		show_images(images);
+	}
 	cv::destroyAllWindows();
 
 	return objects;
@@ -410,10 +395,6 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 {
 	cv::namedWindow("Video", cv::WINDOW_AUTOSIZE);
 	cv::moveWindow("Video", 0, 0);
-	//tracking with color???
-	//tracking due to movement???
-
-
 
 	//create video stream
     cv::VideoCapture capture(source);
@@ -432,21 +413,27 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 		//safety check
 		if(frame.rows==0 || frame.cols==0)
 		{
-			break;
+			std::cout << "Cannot open video steam!" << std::endl;
+ 			break;
 		}
 
-    	//mirror a frame
-    	cv::flip(frame, frame, +1);
-
-//		for(auto& object: objects)
-//		{
-//			cv::inRange();
-//		}
 
 
 
+		for(auto& object: objects)
+		{
+			cv::Mat binary_image = frame.clone();
+			preprocess(binary_image);
+			cv::inRange(binary_image, object.get_HSV_min(), object.get_HSV_max(), binary_image);
+//			make_binary_mask(frame, binary_image, object.get_filename(), object.get_HSV_min(), object.get_HSV_max());
+			cv::imshow("Binary", binary_image);
+			cv::waitKey(30);
+		}
 
 
+
+		//mirror a frame
+		cv::flip(frame, frame, +1);
 		cv::imshow("Video", frame);
 		int button = cv::waitKey(30) & 255;
 		//if ESC pressed

@@ -21,7 +21,7 @@ public:
 
 	void add_derived_image(const std::string& name, cv::Mat image);
 
-	const std::vector<Image>& get_derived_images() const;
+	[[nodiscard]] const std::vector<Image>& get_derived_images() const;
 
 
 };

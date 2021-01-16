@@ -11,6 +11,9 @@
 
 #include "json.hpp"
 
+//#define SINGLE_IMAGE
+//#define IMAGE_NAME "fanta.bmp"
+
 class Image;
 
 
