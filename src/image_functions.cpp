@@ -278,6 +278,32 @@ void binary_mask_from_borders(cv::Mat& image)
 	//#######################################################
 }
 
+//void bounding_rectangle(cv::Mat& image, std::vector<cv::Rect>& rectangles)
+//{
+//	std::vector<std::vector<cv::Point> > contours{};
+//	cv::findContours( image, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE );
+//
+//	for(auto & contour : contours)
+//	{
+//		rectangles.emplace_back(cv::boundingRect(contour));
+//	}
+//
+//
+//}
+
+void bounding_rectangle(cv::Mat& image, cv::Rect& rectangle)
+{
+	std::vector<std::vector<cv::Point> > contours{};
+	cv::findContours( image, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE );
+
+	for(auto & contour : contours)
+	{
+		rectangle |= cv::boundingRect(contour);
+	}
+
+
+}
+
 
 std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 {
@@ -292,13 +318,6 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		std::cout << "Images not found\n";
 		return objects;
 	}
-
-	// main image processing operations
-	// here is used access via index, because of storing all
-	// other data in the same vector, initialized values limit iterations only through
-	// original data, not the added one after
-
-
 
 	//enabling debug mode
 	bool debug_mode;
@@ -317,13 +336,13 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 	}
 
 	//initialize windows
-	if(debug_mode)
-	{
-		cv::namedWindow("Original image", cv::WINDOW_AUTOSIZE);
-		cv::moveWindow("Original image",0, 0);
-		cv::namedWindow("Processed image", cv::WINDOW_AUTOSIZE);
-		cv::moveWindow("Processed image", images[0].get_image().cols + 1, 0);
-	}
+//	if(debug_mode)
+//	{
+//		cv::namedWindow("Original image", cv::WINDOW_AUTOSIZE);
+//		cv::moveWindow("Original image",0, 0);
+//		cv::namedWindow("Processed image", cv::WINDOW_AUTOSIZE);
+//		cv::moveWindow("Processed image", images[0].get_image().cols + 1, 0);
+//	}
 
 	//iterate over all uploaded images to create object
 	for (auto &image: images)
@@ -402,6 +421,14 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		make_binary_mask(processed_image, binary_mask, name, HSV_MIN, HSV_MAX);
 		image.add_derived_image(name + " Threshold", binary_mask.clone());
 
+		//drawing rectangle
+		cv::Mat rectangle_image = cv::Mat::zeros(binary_mask.size(), CV_8UC3);
+		cv::Rect rectangle{};
+		bounding_rectangle(binary_mask, rectangle);
+		cv::rectangle(rectangle_image, rectangle.tl(), rectangle.br(),
+					  cv::Scalar(0,0,255), 2 );
+		image.add_derived_image(name + " rectangle", rectangle_image.clone());
+
 
 		//update given image with the binary mask
 		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
@@ -424,7 +451,7 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 
 
 	//show images in debug mode
-	if(debug_mode)
+	if(!debug_mode)
 	{
 		show_images(images);
 	}
@@ -473,10 +500,10 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 //			cv::waitKey(30);
 //		}
 		auto keypoints = detect_keypoints(frame);
-		if (keypoints.empty())
-		{
-			continue;
-		}
+//		if (keypoints.empty())
+//		{
+//			continue;
+//		}
 		auto descriptor = extract_descriptor(frame, keypoints);
 //		if(descriptor.empty())
 //		{
@@ -485,20 +512,13 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 
 		for(auto& object: objects)
 		{
-//			frame.convertTo(frame, object.image.type());
-//			cv::drawKeypoints( frame, keypoints, frame);
+
 			if(object.descriptor.empty() || descriptor.empty())
 			{
 				continue;
 			}
-
-
 			auto knn_matches = match_descriptors(object.descriptor, descriptor);
-//
-//			if(knn_matches.empty())
-//			{
-//				continue;
-//			}
+
 			//-- Filter matches using the Lowe's ratio test
 			std::vector<cv::DMatch> good_matches{};
 			for(auto & knn_match : knn_matches)
@@ -531,7 +551,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 			x_pos = x_pos / scene.size();
 			y_pos = y_pos / scene.size();
 			cv::circle(frame, cv::Point(x_pos,y_pos),
-			  10,cv::Scalar(0,0,255));
+			  10,cv::Scalar(0,0,255), 8);
 ////			cv::drawMatches(frame, good_matches, frame);
 //			cv::Mat img_matches{};
 //			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
@@ -548,7 +568,9 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 
 		//mirror a frame
 		cv::flip(frame, frame, +1);
+
 		cv::imshow("Video", frame);
+
 		int button = cv::waitKey(30) & 255;
 		//if ESC pressed
 		if (char(button) == 27)
@@ -558,11 +580,4 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 		}
 	}
     capture.release();
-
-	//iterating through objects
-	//make frame binary and detect object due to properties
-	//create bounding box over the object
-	//add name of the objects
-
-	// wait for key to close video stream
 }
