@@ -31,18 +31,5 @@ std::vector<std::vector<cv::DMatch>> match_descriptors(cv::Mat& query_descriptor
 			cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE_HAMMING);
 	std::vector<std::vector<cv::DMatch>> knn_matches{};
 	matcher->knnMatch(query_descriptor, train_descriptor, knn_matches, 2 );
-
-//	//filter matches using Lowe's ratio test
-//	const float ratio_thresh = 0.7f;
-//	std::vector<cv::DMatch> good_matches;
-//	for (size_t i = 0; i < knn_matches.size(); i++)
-//	{
-//		if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
-//		{
-//			good_matches.push_back(knn_matches[i][0]);
-//		}
-//	}
-
-
 	return knn_matches;
 }
