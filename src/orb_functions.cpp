@@ -6,7 +6,8 @@
 
 std::vector<cv::KeyPoint> detect_keypoints(cv::Mat& src)
 {
-	cv::Ptr<cv::FeatureDetector> detector = cv::ORB::create();
+	int nfeatures = 1000;
+	cv::Ptr<cv::FeatureDetector> detector = cv::ORB::create(nfeatures);
 	std::vector<cv::KeyPoint> keypoints{};
 	detector->detect( src, keypoints );
 
@@ -15,8 +16,9 @@ std::vector<cv::KeyPoint> detect_keypoints(cv::Mat& src)
 
 cv::Mat extract_descriptor(cv::Mat& src, std::vector<cv::KeyPoint>& keypoints )
 {
+	int nfeatures = 1000;
 	cv::Mat descriptor{};
-	cv::Ptr<cv::DescriptorExtractor> extractor = cv::ORB::create();
+	cv::Ptr<cv::DescriptorExtractor> extractor = cv::ORB::create(nfeatures);
 	extractor->compute(src, keypoints, descriptor);
 
 
@@ -28,7 +30,7 @@ std::vector<std::vector<cv::DMatch>> match_descriptors(cv::Mat& query_descriptor
 {
 	cv::Ptr<cv::DescriptorMatcher> matcher =
 //			cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE);
-			cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE_HAMMING);
+			cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE_HAMMINGLUT);
 	std::vector<std::vector<cv::DMatch>> knn_matches{};
 	matcher->knnMatch(query_descriptor, train_descriptor, knn_matches, 2 );
 	return knn_matches;

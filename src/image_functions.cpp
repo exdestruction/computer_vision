@@ -425,6 +425,8 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		cv::Mat rectangle_image = cv::Mat::zeros(binary_mask.size(), CV_8UC3);
 		cv::Rect rectangle{};
 		bounding_rectangle(binary_mask, rectangle);
+		object.rectangle = rectangle;
+		object.rectangle_corners = object.get_rectangle_corners();
 		cv::rectangle(rectangle_image, rectangle.tl(), rectangle.br(),
 					  cv::Scalar(0,0,255), 2 );
 		image.add_derived_image(name + " rectangle", rectangle_image.clone());
@@ -474,7 +476,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
     	return;
 	}
     cv::Mat frame{};
-	const float ratio_thresh = 0.65f;
+	const float ratio_thresh = 0.7f;
     for(;;)
 	{
     	//equivalent for capture.read(frame);
@@ -519,6 +521,11 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 			}
 			auto knn_matches = match_descriptors(object.descriptor, descriptor);
 
+			if(knn_matches.empty())
+			{
+				continue;
+			}
+
 			//-- Filter matches using the Lowe's ratio test
 			std::vector<cv::DMatch> good_matches{};
 			for(auto & knn_match : knn_matches)
@@ -531,6 +538,8 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 
 			std::vector<cv::Point2f> obj{};
 			std::vector<cv::Point2f> scene{};
+//			cv::Rect rectangle{};
+			std::vector<cv::Point2f> rectangle_corners(object.rectangle_corners.size());
 			for(auto& match: good_matches)
 			{
 				obj.emplace_back(object.keypoints[match.queryIdx].pt);
@@ -540,28 +549,43 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 			{
 				continue;
 			}
-
-			int x_pos{0};
-			int y_pos{0};
-			for(auto & point : scene)
+			if (obj.size() > 3)
 			{
-				x_pos += point.x;
-				y_pos += point.y;
+				cv::Mat homography = cv::findHomography(obj, scene, cv::RANSAC);
+				if(homography.empty())
+				{
+					continue;
+				}
+				cv::perspectiveTransform(object.rectangle_corners,
+							 rectangle_corners, homography);
+				cv::rectangle(frame, rectangle_corners[0], rectangle_corners[1],
+				  cv::Scalar(255,0,0));
+//				cv::circle(frame, rectangle_corners[0], 3,
+//			   cv::Scalar(0,0,255), 3);
 			}
-			x_pos = x_pos / scene.size();
-			y_pos = y_pos / scene.size();
-			cv::circle(frame, cv::Point(x_pos,y_pos),
-			  10,cv::Scalar(0,0,255), 8);
+
+
+//			int x_pos{0};
+//			int y_pos{0};
+//			for(auto & point : scene)
+//			{
+//				x_pos += point.x;
+//				y_pos += point.y;
+//			}
+//			x_pos = x_pos / scene.size();
+//			y_pos = y_pos / scene.size();
+//			cv::circle(frame, cv::Point(x_pos,y_pos),
+//			  10,cv::Scalar(0,0,255), 8);
 ////			cv::drawMatches(frame, good_matches, frame);
-//			cv::Mat img_matches{};
-//			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
-//				good_matches, img_matches, cv::Scalar::all(-1),
-//				cv::Scalar::all(-1),
-//				std::vector<char>(),
-//				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
-//			//-- Show detected matches
-//			cv::imshow("Good Matches", img_matches);
-//			cv::waitKey(30);
+			cv::Mat img_matches{};
+			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
+				good_matches, img_matches, cv::Scalar::all(-1),
+				cv::Scalar::all(-1),
+				std::vector<char>(),
+				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
+			//-- Show detected matches
+			cv::imshow("Good Matches", img_matches);
+			cv::waitKey(30);
 		}
 
 

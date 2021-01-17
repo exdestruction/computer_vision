@@ -13,12 +13,13 @@ public:
 	std::string filename;
 	std::array<int,3> HSV_min{};
 	std::array<int,3> HSV_max{};
+
 public:
 	cv::Mat descriptor{};
 	cv::Mat image{};
 	std::vector<cv::KeyPoint> keypoints{};
-
-
+	cv::Rect rectangle{};
+	std::vector<cv::Point2f> rectangle_corners{};
 
 
 
@@ -30,6 +31,9 @@ public:
 	TrackedObject() = default;
 	TrackedObject(std::string filename, std::array<int,3> HSV_min, std::array<int,3> HSV_max);
 	~TrackedObject() = default;
+
+	std::vector<cv::Point2f> get_rectangle_corners();
+
 
 //	//setters and getters declared in header file, common practice
 //	void set_HSV_min(std::array<int,3> HSV_min){ this->m_HSV_low = HSV_min;}
