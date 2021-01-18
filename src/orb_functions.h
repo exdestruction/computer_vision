@@ -7,7 +7,6 @@
 #define COMPUTER_VISION_ORB_FUNCTIONS_H
 
 #include "opencv2/opencv.hpp"
-//#include "opencv2/xfeatures2d.hpp"
 
 std::vector<cv::KeyPoint> detect_keypoints(cv::Mat& src);
 cv::Mat extract_descriptor(cv::Mat& src, std::vector<cv::KeyPoint>& keypoints );
