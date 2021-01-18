@@ -391,6 +391,10 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		object.HSV_min = HSV_MIN;
 		object.HSV_max = HSV_MAX;
 
+		//extract letters from tesseract (passing preprocessed image with letters)
+		cv::Mat letter_image{};
+		object.tesseract_letters = get_letters(letter_image);
+
 		//create binary mask
 		cv::Mat binary_mask{};
 		make_binary_mask(processed_image, binary_mask, name, HSV_MIN, HSV_MAX);
@@ -407,6 +411,7 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		image.add_derived_image(name + " rectangle", rectangle_image.clone());
 
 
+
 		//update given image with the binary mask
 		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
 		image.get_image().copyTo(processed_image, binary_mask);
@@ -421,6 +426,8 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		image.add_derived_image(name + " keypoints", object.image.clone());
 
 		object.descriptor = extract_descriptor(object.image, object.keypoints);
+
+
 
 		//update created object to vector
 		objects.emplace_back(object);

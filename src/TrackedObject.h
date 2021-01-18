@@ -11,6 +11,7 @@ class TrackedObject
 {
 public:
 	std::string filename;
+	std::string tesseract_letters{};
 	std::array<int,3> HSV_min{};
 	std::array<int,3> HSV_max{};
 
