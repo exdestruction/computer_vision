@@ -30,7 +30,8 @@ std::vector<std::vector<cv::DMatch>> match_descriptors(cv::Mat& query_descriptor
 {
 	cv::Ptr<cv::DescriptorMatcher> matcher =
 //			cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE);
-			cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE_HAMMINGLUT);
+			cv::DescriptorMatcher::create(
+					cv::DescriptorMatcher::BRUTEFORCE_HAMMING);
 	std::vector<std::vector<cv::DMatch>> knn_matches{};
 	matcher->knnMatch(query_descriptor, train_descriptor, knn_matches, 2 );
 	return knn_matches;

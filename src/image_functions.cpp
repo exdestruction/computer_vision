@@ -255,8 +255,6 @@ void binary_mask_from_borders(cv::Mat& image)
 	cv::Mat contour_image = cv::Mat::zeros(image.size(), image.type());
 
 	cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
-//	illuminate(image, image, 0.5);
-//	cv::Canny(image, image, lower_threshold, upper_threshold, 3, true);
 	cv::adaptiveThreshold(image, image, 255, cv::THRESH_BINARY,
 					   cv::ADAPTIVE_THRESH_GAUSSIAN_C, 999, 10);
 	cv::findContours(image, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
@@ -271,25 +269,9 @@ void binary_mask_from_borders(cv::Mat& image)
 		cv::drawContours(contour_image, contours, (int)i, cv::Scalar(255,0,0));
 		cv::drawContours(contour_image, hull, (int)i, cv::Scalar(0,255,0));
 	}
-//	cv::imshow("Contours",contour_image);
-//	cv::waitKey();
-//	cv::threshold(image, image, 0, 255,cv::THRESH_OTSU);
 
-	//#######################################################
 }
 
-//void bounding_rectangle(cv::Mat& image, std::vector<cv::Rect>& rectangles)
-//{
-//	std::vector<std::vector<cv::Point> > contours{};
-//	cv::findContours( image, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE );
-//
-//	for(auto & contour : contours)
-//	{
-//		rectangles.emplace_back(cv::boundingRect(contour));
-//	}
-//
-//
-//}
 
 void bounding_rectangle(cv::Mat& image, cv::Rect& rectangle)
 {
@@ -549,7 +531,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 			{
 				continue;
 			}
-			if (obj.size() > 3)
+			if (obj.size() > 4)
 			{
 				cv::Mat homography = cv::findHomography(obj, scene, cv::RANSAC);
 				if(homography.empty())
@@ -559,39 +541,28 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 				cv::perspectiveTransform(object.rectangle_corners,
 							 rectangle_corners, homography);
 				cv::rectangle(frame, rectangle_corners[0], rectangle_corners[1],
-				  cv::Scalar(255,0,0));
-//				cv::circle(frame, rectangle_corners[0], 3,
-//			   cv::Scalar(0,0,255), 3);
+				  cv::Scalar(0,0,255), 3);
+				cv::putText(frame, object.filename, cv::Point(rectangle_corners[0].x, rectangle_corners[0].y - 10),
+				cv::FONT_HERSHEY_PLAIN, 1,
+				cv::Scalar(0,255,0));
+
 			}
 
-
-//			int x_pos{0};
-//			int y_pos{0};
-//			for(auto & point : scene)
-//			{
-//				x_pos += point.x;
-//				y_pos += point.y;
-//			}
-//			x_pos = x_pos / scene.size();
-//			y_pos = y_pos / scene.size();
-//			cv::circle(frame, cv::Point(x_pos,y_pos),
-//			  10,cv::Scalar(0,0,255), 8);
-////			cv::drawMatches(frame, good_matches, frame);
-			cv::Mat img_matches{};
-			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
-				good_matches, img_matches, cv::Scalar::all(-1),
-				cv::Scalar::all(-1),
-				std::vector<char>(),
-				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
-			//-- Show detected matches
-			cv::imshow("Good Matches", img_matches);
-			cv::waitKey(30);
+//			cv::Mat img_matches{};
+//			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
+//				good_matches, img_matches, cv::Scalar::all(-1),
+//				cv::Scalar::all(-1),
+//				std::vector<char>(),
+//				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
+//			//-- Show detected matches
+//			cv::imshow("Good Matches", img_matches);
+//			cv::waitKey(30);
 		}
 
 
 
 		//mirror a frame
-		cv::flip(frame, frame, +1);
+//		cv::flip(frame, frame, +1);
 
 		cv::imshow("Video", frame);
 
