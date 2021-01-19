@@ -26,6 +26,6 @@ void show_images(const std::vector<Image>& images);
 
 void illuminate(cv::Mat &src, cv::Mat &output, double k);
 
-std::vector<TrackedObject> create_tracking_objects(const std::string& path);
+std::vector<TrackedObject> create_tracked_objects(const std::string& path);
 
 void track_objects(int source, std::vector<TrackedObject>& objects);
