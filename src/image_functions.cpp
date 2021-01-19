@@ -170,7 +170,8 @@ void illuminate(cv::Mat &src, cv::Mat &output, double k)
 
 }
 
-void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const std::string& filename,
+void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image,
+					  const std::string& filename,
 					  std::array<int, 3> HSV_MIN = {0, 0, 0},
 					  std::array<int, 3> HSV_MAX = {0, 0, 0})
 {
@@ -229,16 +230,9 @@ void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const s
 	cv::dilate(output_image, output_image, element);
 
 }
-
-
 void preprocess_image(cv::Mat& image)
 {
 
-
-//		if (name == "fanta.bmp")
-//		{
-//
-//		}
 	cv::GaussianBlur(image, image, cv::Size(5, 5),
 					 0, 0);
 
@@ -246,7 +240,6 @@ void preprocess_image(cv::Mat& image)
 	image.convertTo(image, -1, 2.6, -120);
 
 }
-
 void binary_mask_from_borders(cv::Mat& image)
 {
 	//#######################################################
@@ -271,8 +264,6 @@ void binary_mask_from_borders(cv::Mat& image)
 	}
 
 }
-
-
 void bounding_rectangle(cv::Mat& image, cv::Rect& rectangle)
 {
 	std::vector<std::vector<cv::Point> > contours{};
@@ -284,6 +275,62 @@ void bounding_rectangle(cv::Mat& image, cv::Rect& rectangle)
 	}
 
 
+}
+
+cv::Mat get_letter_image(cv::Mat src)
+{
+	preprocess_image(src);
+	cv::cvtColor(src, src, cv::COLOR_BGR2GRAY);
+	illuminate(src,src, 0.9);
+//	cv::threshold(src, src, 0, 255, cv::THRESH_OTSU);
+	cv::adaptiveThreshold(src, src, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C,
+					   cv::THRESH_BINARY, 555, 20);
+
+
+	std::vector<std::vector<cv::Point> > contours{};
+	std::vector<cv::Vec4i> hierarchy{};
+	cv::findContours( src, contours, hierarchy, cv::RETR_TREE,
+				   cv::CHAIN_APPROX_SIMPLE );
+
+//	cv::Rect letter_rectangle{};
+//	for(int i = 1; i < contours.size(); i++)
+//	{
+//		cv::Rect rect = cv::boundingRect(contours[i]) ;
+//		cv::Rect prev_rect = {cv::boundingRect(contours[i-1])};
+//		if(prev_rect.x + prev_rect.width + 10 > rect.x)
+//		{
+//			letter_rectangle |=
+//		}
+//	}
+
+//	std::vector<std::vector<cv::Point> > good_contours{};
+//	src = cv::Mat::zeros(src.size(), CV_8UC3);
+//	for (int i = 0; i < contours.size(); i++)
+//	{
+//		if(hierarchy[i][2] == -1)
+//		{
+//			if(cv::contourArea(contours[i]) < 140 && hierarchy[i][3] != -1)
+//			{
+//				good_contours.emplace_back(contours[hierarchy[i][3]]);
+//			}
+//			else
+//			{
+//				good_contours.emplace_back(contours[i]);
+//			}
+//
+//		}
+//	}
+//
+//
+//	for (int i = 0; i < good_contours.size(); i++)
+//	{
+//
+//		cv::drawContours(src, good_contours, (int)i,
+//					cv::Scalar(255,255,255));
+//
+//	}
+
+	return src;
 }
 
 
@@ -392,8 +439,10 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		object.HSV_max = HSV_MAX;
 
 		//extract letters from tesseract (passing preprocessed image with letters)
-		cv::Mat letter_image{};
+//		cv::Mat letter_image = get_letter_image(image.get_image().clone());
+		cv::Mat letter_image = image.get_image().clone();
 		object.tesseract_letters = get_letters(letter_image);
+		image.add_derived_image(name + " letters", letter_image.clone());
 
 		//create binary mask
 		cv::Mat binary_mask{};
@@ -411,11 +460,10 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		image.add_derived_image(name + " rectangle", rectangle_image.clone());
 
 
-
-		//update given image with the binary mask
-		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
-		image.get_image().copyTo(processed_image, binary_mask);
-		image.add_derived_image(name + " with the mask", processed_image);
+//		//update given image with the binary mask
+//		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
+//		image.get_image().copyTo(processed_image, binary_mask);
+//		image.add_derived_image(name + " with the mask", processed_image);
 
 		//detect key points in the image with ORB
 		object.image = image.get_image().clone();
@@ -463,6 +511,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 	{
     	//equivalent for capture.read(frame);
     	capture >> frame;
+//    	preprocess_image(frame);
 
 		//safety check
 		if(frame.rows==0 || frame.cols==0)
@@ -513,7 +562,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 			{
 				continue;
 			}
-			if (obj.size() > 4)
+			if (obj.size() > 3)
 			{
 				cv::Mat homography = cv::findHomography(obj, scene, cv::RANSAC);
 				if(homography.empty())
@@ -524,22 +573,23 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 							 rectangle_corners, homography);
 				cv::rectangle(frame, rectangle_corners[0], rectangle_corners[1],
 				  cv::Scalar(0,0,255), 3);
-				cv::putText(frame, object.filename,
+				cv::putText(frame, object.tesseract_letters,
 					cv::Point(rectangle_corners[0].x, rectangle_corners[0].y - 10),
 					cv::FONT_HERSHEY_PLAIN, 1,
 					cv::Scalar(0,255,0));
 
 			}
 
-//			cv::Mat img_matches{};
-//			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
-//				good_matches, img_matches, cv::Scalar::all(-1),
-//				cv::Scalar::all(-1),
-//				std::vector<char>(),
-//				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
-//			//-- Show detected matches
-//			cv::imshow("Good Matches", img_matches);
-//			cv::waitKey(30);
+			cv::Mat img_matches{};
+			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
+				good_matches, img_matches, cv::Scalar::all(-1),
+				cv::Scalar::all(-1),
+				std::vector<char>(),
+				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
+			//-- Show detected matches
+			cv::imshow("Good Matches", img_matches);
+			cv::waitKey(30);
+//			cv::waitKey();
 		}
 
 

@@ -10,6 +10,7 @@
 #include "trackbars.h"
 #include "orb_functions.h"
 #include "tesseract.h"
+#include "opencv2/text.hpp"
 
 //#include "json.hpp"
 
