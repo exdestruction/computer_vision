@@ -10,13 +10,13 @@ int main()
     src_dir = src_dir + "/data/";
 
     //create objects from data
-    std::vector<TrackedObject> objects = create_tracking_objects(src_dir);
+    std::vector<TrackedObject> objects = create_tracked_objects(src_dir);
 
-//    if (objects.empty())
-//    {
-//    	std::cout << "Can not create tracking objects from " << src_dir << '\n';
-//        return -1;
-//    }
+    if (objects.empty())
+    {
+    	std::cout << "Can not create objects from " << src_dir << '\n';
+        return -1;
+    }
 
 	//function to track objects on the specified video
 	// 0 - source from webcam

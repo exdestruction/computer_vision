@@ -17,3 +17,8 @@ std::vector<cv::Point2f> TrackedObject::get_rectangle_corners() {
 											   rectangle.y + rectangle.height));
 	return this->rectangle_corners;
 }
+
+cv::Point2f calculate_centroid()
+{
+
+}

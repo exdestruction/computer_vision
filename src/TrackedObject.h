@@ -20,6 +20,7 @@ public:
 	std::vector<cv::KeyPoint> keypoints{};
 	cv::Rect rectangle{};
 	std::vector<cv::Point2f> rectangle_corners{};
+	cv::Point2f centroid{};
 
 
 
@@ -33,6 +34,7 @@ public:
 	~TrackedObject() = default;
 
 	std::vector<cv::Point2f> get_rectangle_corners();
+	cv::Point2f calculate_centroid();
 
 
 //	//setters and getters declared in header file, common practice
