@@ -251,6 +251,62 @@ void bounding_rectangle(cv::Mat& image, cv::Rect& rectangle)
 	}
 }
 
+cv::Mat get_letter_image(cv::Mat src)
+{
+	preprocess_image(src);
+	cv::cvtColor(src, src, cv::COLOR_BGR2GRAY);
+	illuminate(src,src, 0.9);
+//	cv::threshold(src, src, 0, 255, cv::THRESH_OTSU);
+	cv::adaptiveThreshold(src, src, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C,
+					   cv::THRESH_BINARY, 555, 20);
+
+
+	std::vector<std::vector<cv::Point> > contours{};
+	std::vector<cv::Vec4i> hierarchy{};
+	cv::findContours( src, contours, hierarchy, cv::RETR_TREE,
+				   cv::CHAIN_APPROX_SIMPLE );
+
+//	cv::Rect letter_rectangle{};
+//	for(int i = 1; i < contours.size(); i++)
+//	{
+//		cv::Rect rect = cv::boundingRect(contours[i]) ;
+//		cv::Rect prev_rect = {cv::boundingRect(contours[i-1])};
+//		if(prev_rect.x + prev_rect.width + 10 > rect.x)
+//		{
+//			letter_rectangle |=
+//		}
+//	}
+
+	std::vector<std::vector<cv::Point> > good_contours{};
+	src = cv::Mat::zeros(src.size(), CV_8UC3);
+	for (int i = 0; i < contours.size(); i++)
+	{
+		if(hierarchy[i][2] == -1)
+		{
+			if(cv::contourArea(contours[i]) < 140 && hierarchy[i][3] != -1)
+			{
+				good_contours.emplace_back(contours[hierarchy[i][3]]);
+			}
+			else
+			{
+				good_contours.emplace_back(contours[i]);
+			}
+
+		}
+	}
+
+
+	for (int i = 0; i < good_contours.size(); i++)
+	{
+
+		cv::drawContours(src, good_contours, (int)i,
+					cv::Scalar(255,255,255));
+
+	}
+
+	return src;
+}
+
 
 std::vector<TrackedObject> create_tracked_objects(const std::string& path)
 {
