@@ -12,7 +12,7 @@ cv::Mat resize_image(cv::Mat image, double zoom_factor) {
 		std::cout << "Wrong Zoom-factor: too small -> it is set to 1.0\n";
 		zoom_factor = 1.0;
 	}
-	int type = (image).type();
+	int type = image.type();
 
     [[maybe_unused]] uchar depth = type & CV_MAT_DEPTH_MASK;
     [[maybe_unused]] uchar channels = 1 + (type >> CV_CN_SHIFT);
@@ -170,7 +170,8 @@ void illuminate(cv::Mat &src, cv::Mat &output, double k)
 
 }
 
-void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const std::string& filename,
+void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image,
+					  const std::string& filename,
 					  std::array<int, 3> HSV_MIN = {0, 0, 0},
 					  std::array<int, 3> HSV_MAX = {0, 0, 0})
 {
@@ -193,30 +194,6 @@ void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const s
 		output_image = ~output_image;
 	}
 
-
-//	//find enclosing contour with maximal area
-//	std::vector<std::vector<cv::Point>> contours;
-//	std::vector<cv::Vec4i> hierarchy;
-//	cv::findContours(output_image, contours, hierarchy,cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE );
-//	//fill inner area white
-//	std::vector<double> areas{};
-//	int max_area_index{};
-//	for(auto& contour: contours)
-//	{
-//		areas.emplace_back(cv::contourArea(contour));
-//	}
-//	double max_area{areas[0]};
-//	for (int i = 0; i < areas.size(); i++)
-//	{
-//		if(areas[i] > max_area)
-//		{
-//			max_area_index = i;
-//			max_area = areas[i];
-//		}
-//	}
-//	cv::Mat output_image = cv::Mat::zeros(output_image.size(), CV_8U);
-//	cv::fillPoly(output_image, contours[max_area_index], 255);
-
 	//morphological operations
 	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7,7),
 											 cv::Point(-1,-1));
@@ -229,16 +206,9 @@ void make_binary_mask(const cv::Mat &input_image, cv::Mat &output_image, const s
 	cv::dilate(output_image, output_image, element);
 
 }
-
-
 void preprocess_image(cv::Mat& image)
 {
 
-
-//		if (name == "fanta.bmp")
-//		{
-//
-//		}
 	cv::GaussianBlur(image, image, cv::Size(5, 5),
 					 0, 0);
 
@@ -246,7 +216,6 @@ void preprocess_image(cv::Mat& image)
 	image.convertTo(image, -1, 2.6, -120);
 
 }
-
 void binary_mask_from_borders(cv::Mat& image)
 {
 	//#######################################################
@@ -271,8 +240,6 @@ void binary_mask_from_borders(cv::Mat& image)
 	}
 
 }
-
-
 void bounding_rectangle(cv::Mat& image, cv::Rect& rectangle)
 {
 	std::vector<std::vector<cv::Point> > contours{};
@@ -282,12 +249,10 @@ void bounding_rectangle(cv::Mat& image, cv::Rect& rectangle)
 	{
 		rectangle |= cv::boundingRect(contour);
 	}
-
-
 }
 
 
-std::vector<TrackedObject> create_tracking_objects(const std::string& path)
+std::vector<TrackedObject> create_tracked_objects(const std::string& path)
 {
 	std::vector<TrackedObject> objects{};
 
@@ -309,7 +274,6 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		std::cout << "Do you want debug mode? [y/n] ";
 		std::cin >> answer;
 		std::cout << std::endl;
-//			std::cin.get(answer);
 		debug_mode = answer == 'y';
 		if (answer == 'y' || answer == 'n')
 		{
@@ -392,8 +356,10 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		object.HSV_max = HSV_MAX;
 
 		//extract letters from tesseract (passing preprocessed image with letters)
-		cv::Mat letter_image{};
+		cv::Mat letter_image = get_letter_image(image.get_image().clone());
+//		cv::Mat letter_image = image.get_image().clone();
 		object.tesseract_letters = get_letters(letter_image);
+		image.add_derived_image(name + " letters", letter_image.clone());
 
 		//create binary mask
 		cv::Mat binary_mask{};
@@ -411,11 +377,10 @@ std::vector<TrackedObject> create_tracking_objects(const std::string& path)
 		image.add_derived_image(name + " rectangle", rectangle_image.clone());
 
 
-
-		//update given image with the binary mask
-		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
-		image.get_image().copyTo(processed_image, binary_mask);
-		image.add_derived_image(name + " with the mask", processed_image);
+//		//update given image with the binary mask
+//		processed_image = cv::Mat::zeros(image.get_image().size(), image.get_image().type());
+//		image.get_image().copyTo(processed_image, binary_mask);
+//		image.add_derived_image(name + " with the mask", processed_image);
 
 		//detect key points in the image with ORB
 		object.image = image.get_image().clone();
@@ -450,6 +415,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 	cv::namedWindow("Video", cv::WINDOW_AUTOSIZE);
 	cv::moveWindow("Video", 0, 0);
 
+
 	//create video stream
     cv::VideoCapture capture(source);
     if(!capture.isOpened())
@@ -458,11 +424,12 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
     	return;
 	}
     cv::Mat frame{};
-	const float ratio_thresh = 0.7f;
+	const float ratio_thresh = 0.64f;
     for(;;)
 	{
     	//equivalent for capture.read(frame);
     	capture >> frame;
+//    	preprocess_image(frame);
 
 		//safety check
 		if(frame.rows==0 || frame.cols==0)
@@ -504,6 +471,10 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 			std::vector<cv::Point2f> scene{};
 //			cv::Rect rectangle{};
 			std::vector<cv::Point2f> rectangle_corners(object.rectangle_corners.size());
+//			for(auto& match: good_matches)
+//			{
+//
+//			}
 			for(auto& match: good_matches)
 			{
 				obj.emplace_back(object.keypoints[match.queryIdx].pt);
@@ -515,7 +486,7 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 			}
 			if (obj.size() > 4)
 			{
-				cv::Mat homography = cv::findHomography(obj, scene, cv::RANSAC);
+				cv::Mat homography = cv::findHomography(obj, scene, cv::RHO);
 				if(homography.empty())
 				{
 					continue;
@@ -530,23 +501,26 @@ void track_objects(int source, std::vector<TrackedObject>& objects)
 
 			}
 
-//			cv::Mat img_matches{};
-//			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
-//				good_matches, img_matches, cv::Scalar::all(-1),
-//				cv::Scalar::all(-1),
-//				std::vector<char>(),
-//				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
-//			//-- Show detected matches
-//			cv::imshow("Good Matches", img_matches);
-//			cv::waitKey(30);
+			cv::Mat img_matches{};
+			cv::drawMatches( object.image, object.keypoints, frame, keypoints,
+				good_matches, img_matches, cv::Scalar::all(-1),
+				cv::Scalar::all(-1),
+				std::vector<char>(),
+				cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS  );
+			//-- Show detected matches
+			cv::imshow("Good Matches", img_matches);
+			cv::waitKey(30);
+//			cv::waitKey();
 		}
 
 
 
 		//mirror a frame
 //		cv::flip(frame, frame, +1);
-
+		frame = resize_image(frame, 2);
 		cv::imshow("Video", frame);
+
+//		cv::waitKey();
 
 		int button = cv::waitKey(30) & 255;
 		//if ESC pressed
