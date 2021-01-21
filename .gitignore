@@ -1,11 +1,11 @@
 # Not igrore
 !.gitignore
-!data/.gitignore
+#!data/.gitignore
+#!data
 
 #Ignore
 *.log
 /bin*
-#*.bmp
 */.vs
 *.user
 /build
